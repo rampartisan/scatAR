@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_required">Потрібно виконати дію</string>
+    <string name="connection_layout_message_still">Не рухайтесь</string>
+    <string name="connection_layout_message_tight">Тримайте міцно</string>
+    <string name="device_not_responding_description">Закрийте та відкрийте додаток або перезапустіть пристрій.</string>
+    <string name="device_not_responding_title">Система недоступна.</string>
+    <string description="Shown as system notification to hold the device at a suggested posture, in combination with &apos;hold_posture_forward/up/down&apos;." name="hold_posture_description">Спрямуйте пристрій %s.</string>
+    <string name="hold_posture_down">униз</string>
+    <string name="hold_posture_forward">вперед</string>
+    <string name="hold_posture_title">Неправильний нахил.</string>
+    <string name="hold_posture_up">угору</string>
+    <string name="lying_on_surface_description">Підніміть пристрій, щоб продовжити.</string>
+    <string name="lying_on_surface_title">Камеру заблоковано.</string>
+    <string name="motion_track_description">Тримайте пристрій рівно, щоб функція знову ввімкнулася.</string>
+    <string name="motion_track_title">Рух не відстежується.</string>
+    <string name="moving_too_fast_description">Уповільніть рух і тримайте пристрій рівно.</string>
+    <string name="moving_too_fast_title">Зашвидко.</string>
+    <string name="not_enough_light_description">Використовуйте пристрій у добре освітлених місцях.</string>
+    <string name="not_enough_light_title">Занадто темно.</string>
+    <string description="Shown as system notification to change the device&apos;s system runtime to &apos;ART&apos;, no need to translate &apos;ART&apos;." name="run_time_mismatch_description">Відкрийте \"Налаштування\" > \"Параметри розробника\" й виберіть \"Використовувати ART\".</string>
+    <string name="run_time_mismatch_title">Помилка конфігурації.</string>
+    <string name="service_updated_check_updates">Перевірте наявність оновлень</string>
+    <string description="Shown as system notification to update Tango Core, which is a system library, no need to translate &apos;Tango Core&apos;." name="service_updated_description">Оновіть до останньої версії Tango Core.</string>
+    <string description="No need to translate &apos;Tango Core&apos;." name="service_updated_linkify">Tango Core</string>
+    <string name="service_updated_title">Несумісна версія.</string>
+    <string name="space_not_recognized_description">Наведіть пристрій на інше місце.</string>
+    <string name="space_not_recognized_title">Простір не розпізнається.</string>
+    <string name="too_much_light_description">Не наводьте пристрій на яскраве світло.</string>
+    <string name="too_much_light_title">Занадто яскраво.</string>
+    <string name="unable_to_detect_surface_description">Тримайте пристрій принаймні на відстані витягнутої руки від предметів.</string>
+    <string name="unable_to_detect_surface_title">Нічого не виявлено.</string>
+</resources>

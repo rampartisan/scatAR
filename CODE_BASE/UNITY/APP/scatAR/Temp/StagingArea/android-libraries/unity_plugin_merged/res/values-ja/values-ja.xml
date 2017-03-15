@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_required">操作が必要</string>
+    <string name="connection_layout_message_still">動かさないでください</string>
+    <string name="connection_layout_message_tight">しっかりと握ってください</string>
+    <string name="device_not_responding_description">アプリを再起動するかデバイスを再起動してください。</string>
+    <string name="device_not_responding_title">システムの使用不可</string>
+    <string description="Shown as system notification to hold the device at a suggested posture, in combination with &apos;hold_posture_forward/up/down&apos;." name="hold_posture_description">デバイスを%sに向けてください。</string>
+    <string name="hold_posture_down">下</string>
+    <string name="hold_posture_forward">前方</string>
+    <string name="hold_posture_title">傾斜エラー</string>
+    <string name="hold_posture_up">上</string>
+    <string name="lying_on_surface_description">続行するには端末を確認してください。</string>
+    <string name="lying_on_surface_title">カメラが塞がれています</string>
+    <string name="motion_track_description">固定してシステムを回復してください。</string>
+    <string name="motion_track_title">トラッキング エラー</string>
+    <string name="moving_too_fast_description">速度を落としてデバイスを安定させてください。</string>
+    <string name="moving_too_fast_title">速すぎます</string>
+    <string name="not_enough_light_description">十分に明るい場所でデバイスを使用してください。</string>
+    <string name="not_enough_light_title">暗すぎます</string>
+    <string description="Shown as system notification to change the device&apos;s system runtime to &apos;ART&apos;, no need to translate &apos;ART&apos;." name="run_time_mismatch_description">[設定] > [デベロッパー向けの設定] に移動して、[ART の使用] を選択します。</string>
+    <string name="run_time_mismatch_title">設定エラー</string>
+    <string name="service_updated_check_updates">更新の確認</string>
+    <string description="Shown as system notification to update Tango Core, which is a system library, no need to translate &apos;Tango Core&apos;." name="service_updated_description">最新の Tango Core に更新してください。</string>
+    <string description="No need to translate &apos;Tango Core&apos;." name="service_updated_linkify">Tango Core</string>
+    <string name="service_updated_title">バージョンの互換性なし</string>
+    <string name="space_not_recognized_description">デバイスを他の場所に向けてください。</string>
+    <string name="space_not_recognized_title">空間の認識エラー</string>
+    <string name="too_much_light_description">明るい光に向けないでください。</string>
+    <string name="too_much_light_title">明るすぎます</string>
+    <string name="unable_to_detect_surface_description">デバイスとオブジェクトは少なくとも腕の長さ程度は遠ざけてください。</string>
+    <string name="unable_to_detect_surface_title">検出なし</string>
+</resources>

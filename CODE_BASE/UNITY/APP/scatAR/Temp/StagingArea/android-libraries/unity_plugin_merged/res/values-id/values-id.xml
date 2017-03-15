@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_required">Perlu tindakan</string>
+    <string name="connection_layout_message_still">Tahan</string>
+    <string name="connection_layout_message_tight">Pegang erat</string>
+    <string name="device_not_responding_description">Mulai ulang aplikasi atau boot ulang perangkat.</string>
+    <string name="device_not_responding_title">Sistem tidak tersedia.</string>
+    <string description="Shown as system notification to hold the device at a suggested posture, in combination with &apos;hold_posture_forward/up/down&apos;." name="hold_posture_description">Arahkan perangkat %s.</string>
+    <string name="hold_posture_down">bawah</string>
+    <string name="hold_posture_forward">maju</string>
+    <string name="hold_posture_title">Goyangan salah.</string>
+    <string name="hold_posture_up">atas</string>
+    <string name="lying_on_surface_description">Ambil perangkat untuk melanjutkan.</string>
+    <string name="lying_on_surface_title">Kamera diblokir.</string>
+    <string name="motion_track_description">Pegang dengan stabil untuk memulihkan sistem.</string>
+    <string name="motion_track_title">Pelacakan hilang.</string>
+    <string name="moving_too_fast_description">Perlambat dan pegang perangkat dengan stabil.</string>
+    <string name="moving_too_fast_title">Terlalu cepat.</string>
+    <string name="not_enough_light_description">Gunakan perangkat ini di tempat dengan cahaya cukup.</string>
+    <string name="not_enough_light_title">Terlalu gelap.</string>
+    <string description="Shown as system notification to change the device&apos;s system runtime to &apos;ART&apos;, no need to translate &apos;ART&apos;." name="run_time_mismatch_description">Buka Setelan > Opsi pengembang dan pilih \"Gunakan ART\".</string>
+    <string name="run_time_mismatch_title">Konfigurasi salah.</string>
+    <string name="service_updated_check_updates">Periksa pembaruan</string>
+    <string description="Shown as system notification to update Tango Core, which is a system library, no need to translate &apos;Tango Core&apos;." name="service_updated_description">Perbarui ke versi terbaru Tango Core.</string>
+    <string description="No need to translate &apos;Tango Core&apos;." name="service_updated_linkify">Tango Core</string>
+    <string name="service_updated_title">Versi tidak kompatibel.</string>
+    <string name="space_not_recognized_description">Arahkan perangkat ke tempat lain.</string>
+    <string name="space_not_recognized_title">Ruang tidak diketahui.</string>
+    <string name="too_much_light_description">Jangan arahkan ke cahaya terang.</string>
+    <string name="too_much_light_title">Terlalu terang.</string>
+    <string name="unable_to_detect_surface_description">Jauhkan perangkat dari objek setidaknya sepanjang lengan.</string>
+    <string name="unable_to_detect_surface_title">Tidak ada yang terdeteksi.</string>
+</resources>

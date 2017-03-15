@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_required">Yêu cầu hành động</string>
+    <string name="connection_layout_message_still">Giữ im</string>
+    <string name="connection_layout_message_tight">Giữ chặt</string>
+    <string name="device_not_responding_description">Hãy khởi động lại ứng dụng hoặc khởi động lại thiết bị.</string>
+    <string name="device_not_responding_title">Hệ thống không khả dụng.</string>
+    <string description="Shown as system notification to hold the device at a suggested posture, in combination with &apos;hold_posture_forward/up/down&apos;." name="hold_posture_description">Hãy hướng thiết bị %s.</string>
+    <string name="hold_posture_down">xuống</string>
+    <string name="hold_posture_forward">ra trước</string>
+    <string name="hold_posture_title">Nghiêng không chính xác.</string>
+    <string name="hold_posture_up">lên</string>
+    <string name="lying_on_surface_description">Hãy nhấc thiết bị để tiếp tục.</string>
+    <string name="lying_on_surface_title">Máy ảnh đã bị chặn.</string>
+    <string name="motion_track_description">Hãy giữ ổn định để cho hệ thống phục hồi.</string>
+    <string name="motion_track_title">Đã mất theo dõi.</string>
+    <string name="moving_too_fast_description">Hãy chậm lại và giữ thiết bị ổn định.</string>
+    <string name="moving_too_fast_title">Quá nhanh.</string>
+    <string name="not_enough_light_description">Hãy sử dụng thiết bị trong các khu vực đủ sáng.</string>
+    <string name="not_enough_light_title">Quá tối.</string>
+    <string description="Shown as system notification to change the device&apos;s system runtime to &apos;ART&apos;, no need to translate &apos;ART&apos;." name="run_time_mismatch_description">Hãy truy cập Cài đặt > Tùy chọn nhà phát triển và chọn \"Sử dụng ART\".</string>
+    <string name="run_time_mismatch_title">Cấu hình không chính xác.</string>
+    <string name="service_updated_check_updates">Hãy kiểm tra bản cập nhật</string>
+    <string description="Shown as system notification to update Tango Core, which is a system library, no need to translate &apos;Tango Core&apos;." name="service_updated_description">Cập nhật lên Tango Core mới nhất.</string>
+    <string description="No need to translate &apos;Tango Core&apos;." name="service_updated_linkify">Tango Core</string>
+    <string name="service_updated_title">Phiên bản không tương thích.</string>
+    <string name="space_not_recognized_description">Hãy hướng thiết bị về một chỗ khác.</string>
+    <string name="space_not_recognized_title">Không nhận ra không gian.</string>
+    <string name="too_much_light_description">Tránh hướng vào đèn sáng.</string>
+    <string name="too_much_light_title">Quá sáng.</string>
+    <string name="unable_to_detect_surface_description">Hãy giữ thiết bị các cách vật thể ít nhất một cánh tay.</string>
+    <string name="unable_to_detect_surface_title">Đã không phát hiện gì.</string>
+</resources>

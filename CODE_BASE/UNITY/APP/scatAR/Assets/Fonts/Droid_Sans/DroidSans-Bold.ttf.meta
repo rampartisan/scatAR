@@ -1,0 +1,21 @@
+fileFormatVersion: 2
+guid: 0e4cc8ae6a6fe451ab1a527688937ddf
+timeCreated: 1488922257
+licenseType: Free
+TrueTypeFontImporter:
+  serializedVersion: 4
+  fontSize: 16
+  forceTextureCase: -2
+  characterSpacing: 0
+  characterPadding: 1
+  includeFontData: 1
+  fontName: Droid Sans
+  fontNames:
+  - Droid Sans
+  fallbackFontReferences: []
+  customCharacters: 
+  fontRenderingMode: 0
+  ascentCalculationMode: 1
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
