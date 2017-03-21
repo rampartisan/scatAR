@@ -1,8 +1,17 @@
 ﻿<Properties StartupItem="Assembly-CSharp.csproj">
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
-  <MonoDevelop.Ide.Workbench />
+  <MonoDevelop.Ide.Workbench ActiveDocument="Assets/TANGO/Script/MeshOcclusionUIController.cs">
+    <Files>
+      <File FileName="Assets/TANGO/Script/MeshOcclusionUIController.cs" Line="975" Column="30" />
+      <File FileName="Assets/TANGO/Script/TangoDynamicMesh.cs" Line="223" Column="1" />
+      <File FileName="Assets/OBJ/src/OBJ.cs" Line="90" Column="8" />
+    </Files>
+  </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
-    <BreakpointStore />
+    <BreakpointStore>
+      <Breakpoint file="/Users/Alex/AAU/THESIS/CODE_BASE/UNITY/APP/scatAR/Assets/OBJImport/OBJLoader.cs" line="346" column="1" />
+      <Breakpoint file="/Users/Alex/AAU/THESIS/CODE_BASE/UNITY/APP/scatAR/Assets/OBJImport/OBJLoader.cs" line="412" column="1" />
+    </BreakpointStore>
   </MonoDevelop.Ide.DebuggingService.Breakpoints>
   <MonoDevelop.Ide.DebuggingService.PinnedWatches />
 </Properties>

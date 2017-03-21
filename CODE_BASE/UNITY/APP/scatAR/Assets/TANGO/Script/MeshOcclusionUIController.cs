@@ -30,6 +30,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using UnityEngine.UI;
 using System.Text;
+using System.Globalization;
 
 public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoPose
 {
@@ -84,6 +85,8 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 	/// The text overlay that is shown when the Area Description or mesh is being saved.
 	/// </summary>
 	public Text m_savingText;
+
+	public GameObject m_savingPanel;
 
 	/// <summary>
 	/// The parent panel that loads the selected Area Description.
@@ -178,8 +181,6 @@ public GameObject m_viewMeshButton;
 	/// </summary>
 	public Material m_visibleMat;
 
-	///
-
 	/// <summary>
 	/// The tango dynamic mesh used for occlusion.
 	/// </summary>
@@ -264,6 +265,7 @@ public GameObject m_viewMeshButton;
 		}
 	}
 
+
 	/// <summary>
 	/// Update is called once per frame.
 	/// Return to menu or quit current application when back button is triggered.
@@ -277,12 +279,13 @@ public GameObject m_viewMeshButton;
 				// immediately results in a deadlocked app.
 				AndroidHelper.AndroidQuit ();
 			} else {
-				#pragma warning disable 618
-				Application.LoadLevel (Application.loadedLevel);
-				#pragma warning restore 618
+				reloadLevel ();
 			}
 		}
 	}
+
+
+
 
 	/// <summary>
 	/// Application onPause / onResume callback.
@@ -418,11 +421,6 @@ public GameObject m_viewMeshButton;
 				Debug.LogError ("No Area Description loaded.");
 			}
 		}
-
-		if (!m_meshObject.m_enableDebugUI) {
-			m_meshObject.m_enableDebugUI = true;
-		}
-
 	}
 
 	/// <summary>
@@ -437,49 +435,24 @@ public GameObject m_viewMeshButton;
 			return;
 		}
 
-		if (!File.Exists (m_meshSavePath + "/" + m_savedUUID)) {
+		if (!File.Exists (m_meshSavePath + "/" + m_savedUUID + ".obj")) {
 			AndroidHelper.ShowAndroidToastMessage ("Please choose an Area Description with mesh data.");
 			return;
 		}
 
-		m_3dReconstruction = true;
 		m_menuOpen = false;
 
-		// Enable objects needed to use Area Description and mesh for occlusion.
-		m_arPoseController.gameObject.SetActive (true);
-		m_arPoseController.m_useAreaDescriptionPose = true;
-
-		// Disable unused components in tango application.
-		m_tangoApplication.m_areaDescriptionLearningMode = false;
-		m_tangoApplication.m_enableDepth = false;
-
 		// Set UI panel to the mesh interaction panel.
-		m_relocalizeImage.gameObject.SetActive (true);
 		m_areaDescriptionLoaderPanel.SetActive (false);
 		m_meshBuildPanel.SetActive (false);
-		m_meshInteractionPanel.SetActive (true);
+		m_savingText.text = "Loading Mesh ...";
+		m_savingPanel.SetActive (true);
+	
 
-		// Load mesh.
-		AreaDescriptionMesh mesh = _DeserializeAreaDescriptionMesh (m_savedUUID);
-		if (mesh == null) {
-			return;
-		}
-   
-		// Create GameObject container with mesh components for the loaded mesh.
-		m_meshFromFile = new GameObject ();
-		MeshFilter mf = m_meshFromFile.AddComponent<MeshFilter> ();
-		mf.mesh = _AreaDescriptionMeshToUnityMesh (mesh);
-		MeshRenderer mr = m_meshFromFile.AddComponent<MeshRenderer> ();
-		mr.material = m_depthMaskMat;
-		m_meshFromFile.AddComponent<MeshCollider> ();
-		m_meshFromFile.layer = LayerMask.NameToLayer ("Occlusion");
-
-		// Load Area Description file.
-		m_curAreaDescription = AreaDescription.ForUUID (m_savedUUID);
-
-		m_tangoApplication.Startup (m_curAreaDescription);
+		//LOAD OBJ HERE
+		loadOBJToUnity();
 	}
-
+		
 	/// <summary>
 	/// From button press: delete all saved meshes associated with area definitions.
 	/// </summary>
@@ -505,8 +478,9 @@ public GameObject m_viewMeshButton;
 		m_tangoDynamicMesh.Clear ();
 		m_tangoApplication.Tango3DRClear ();
 
-		AndroidHelper.ShowAndroidToastMessage ("Mesh cleared.");
+		AndroidHelper.ShowAndroidToastMessage ("Mesh cleared ...");
 	}
+
 
 	/// <summary>
 	/// Finalize the 3D mesh on canvas button press.
@@ -515,19 +489,17 @@ public GameObject m_viewMeshButton;
 	{
 		m_tangoApplication.Set3DReconstructionEnabled (false);
 		m_meshBuildPanel.SetActive (false);
-		m_savingText.gameObject.SetActive (true);   
-		StartCoroutine(_DoSaveAreaDescriptionAndMesh());
+		m_savingPanel.SetActive(true);
+		m_savingText.text = ("Saving Mesh");
+		StartCoroutine (_DoSaveMeshOverFrames ());
 	}
-		
+
 	/// <summary>
 	/// Set the marker object at the raycast location when the user has interacted with the image overlay.
 	/// </summary>
 	/// <param name="data">Event data from canvas event trigger.</param>
 	public void Image_PlaceMarker (BaseEventData data)
 	{
-		print ("in place");
-
-
 		PointerEventData pdata = (PointerEventData)data;
 
 		// Place marker object at target point hit by raycast.
@@ -544,8 +516,13 @@ public GameObject m_viewMeshButton;
 	/// </summary>
 	public void Button_ViewMesh ()
 	{
-		m_meshFromFile.GetComponent<MeshRenderer> ().material = m_visibleMat;
+		//m_meshFromFile.GetComponent<MeshRenderer> ().material = m_visibleMat;
     
+
+		foreach (MeshRenderer mr in m_meshFromFile.GetComponentsInChildren<MeshRenderer>()) {
+			mr.material = m_visibleMat;
+		}
+
 		m_viewMeshButton.SetActive (false);
 		m_hideMeshButton.SetActive (true);
 	}
@@ -555,8 +532,13 @@ public GameObject m_viewMeshButton;
 	/// </summary>
 	public void Button_HideMesh ()
 	{
-		m_meshFromFile.GetComponent<MeshRenderer> ().material = m_depthMaskMat;
+		//m_meshFromFile.GetComponent<MeshRenderer> ().material = m_depthMaskMat;
     
+		foreach (MeshRenderer mr in  m_meshFromFile.GetComponentsInChildren<MeshRenderer>()) {
+			mr.material = m_depthMaskMat;
+		}
+
+
 		m_viewMeshButton.SetActive (true);
 		m_hideMeshButton.SetActive (false);
 	}
@@ -602,7 +584,7 @@ public GameObject m_viewMeshButton;
 			listElement.m_areaDescriptionUUID.text = areaDescription.m_uuid;
         
 			// Check if there is an associated Area Description mesh.
-			bool hasMeshData = File.Exists (m_meshSavePath + "/" + areaDescription.m_uuid) ? true : false;
+			bool hasMeshData = File.Exists (m_meshSavePath + "/" + areaDescription.m_uuid + ".obj") ? true : false;
 			listElement.m_hasMeshData.gameObject.SetActive (hasMeshData);
         
 			// Ensure the lambda makes a copy of areaDescription.
@@ -624,7 +606,7 @@ public GameObject m_viewMeshButton;
 			m_createSelectedButton.interactable = true;
 			m_deleteSelectedButton.interactable = true;
 			m_curAreaDescription = AreaDescription.ForUUID (m_savedUUID);
-			if (File.Exists (m_meshSavePath + "/" + item.m_uuid)) {
+			if (File.Exists (m_meshSavePath + "/" + item.m_uuid + ".obj")) {
 				m_startGameButton.interactable = true;
 				m_exportSelectedButton.interactable = true;
 			} else {
@@ -641,84 +623,7 @@ public GameObject m_viewMeshButton;
 
 		}
 	}
-
-	/// <summary>
-	/// Actually do the Area Description save.
-	/// </summary>
-	/// <returns>Coroutine IEnumerator.</returns>
-	private IEnumerator _DoSaveAreaDescriptionAndMesh ()
-	{
-		if (m_saveThread != null) {
-			yield break;
-		}
-
-		// Disable interaction before saving.
-		m_initialized = false;
-		m_savingText.text = "Saving Area Description...";
-
-		if (string.IsNullOrEmpty (m_savedUUID)) {
-			
-			m_saveThread = new Thread (delegate() {
-
-				// Save the Area Description to file.
-				m_curAreaDescription = AreaDescription.SaveCurrent ();
-				AreaDescription.Metadata metadata = m_curAreaDescription.GetMetadata ();
-
-				metadata.m_name = waitAndGetUserInput("Enter A Meaningful Name For This Area");
-				metadata.m_dateTime = DateTime.Now;
-				m_savedUUID = m_curAreaDescription.m_uuid;    
-				m_curAreaDescription.SaveMetadata (metadata);
-
-				StartCoroutine (_DoSaveTangoDynamicMesh ());
-			});
-
-			m_saveThread.Start ();
 		
-		} else {
-		StartCoroutine (_DoSaveTangoDynamicMesh ());
-		}
-	}
-
-	/// <summary>
-	/// Save the tango dynamic mesh.
-	///
-	/// Process the mesh in 3 steps.
-	/// 1. Extract the whole mesh from tango 3D Reconstruction.
-	/// 2. Convert to a serializable format.
-	/// 3. Serialize with XML on to the SD card.
-	/// </summary>
-	/// <returns>The coroutine IEnumerator.</returns>
-	private IEnumerator _DoSaveTangoDynamicMesh ()
-	{
-		m_savingText.gameObject.SetActive (true);
-		m_savingText.text = "Extracting Whole Mesh...";
-
-		// Each list is filled out with values from extracting the whole mesh.
-		List<Vector3> vertices = new List<Vector3> ();
-		List<int> triangles = new List<int> ();
-
-		Tango3DReconstruction.Status status = m_tangoApplication.Tango3DRExtractWholeMesh (vertices, null, null, triangles);
-	
-		if (status != Tango3DReconstruction.Status.SUCCESS) {
-			Debug.Log ("Tango3DRExtractWholeMesh failed, status code = " + status);
-			yield break;
-		}
-			
-		Mesh extractedMesh = new Mesh ();
-		extractedMesh.vertices = vertices.ToArray ();
-		extractedMesh.triangles = triangles.ToArray ();
-
-		// Save the generated unity mesh.
-		m_savingText.text = "Saving Area Description Mesh...";
-		AreaDescriptionMesh mesh = _UnityMeshToAreaDescriptionMesh (m_savedUUID, extractedMesh);
-		_SerializeAreaDescriptionMesh (mesh);
-
-		// Restart scene after completion.
-		#pragma warning disable 618
-		Application.LoadLevel (Application.loadedLevel);
-		#pragma warning restore 618
-	}
-
 	/// <summary>
 	/// Convert a unity mesh to an Area Description mesh.
 	/// </summary>
@@ -760,6 +665,15 @@ public GameObject m_viewMeshButton;
 		file.Close ();
 	}
 
+	private void _SerializeAreaDescriptionMeshTemp (AreaDescriptionMesh saveMesh)
+	{
+		XmlSerializer serializer = new XmlSerializer (typeof(AreaDescriptionMesh));
+		FileStream file = File.Create (m_meshSavePath + "/" + "tempMesh");
+		serializer.Serialize (file, saveMesh);
+		file.Close ();
+	}
+
+
 	/// <summary>
 	/// Deserialize an Area Description mesh from file.
 	/// </summary>
@@ -767,7 +681,7 @@ public GameObject m_viewMeshButton;
 	/// <param name="uuid">The UUID of the associated Area Description.</param>
 	private AreaDescriptionMesh _DeserializeAreaDescriptionMesh (string uuid)
 	{
-		if (File.Exists (m_meshSavePath + "/" + uuid)) {
+		if (File.Exists (m_meshSavePath + "/" + uuid + ".obj")) {
 			XmlSerializer serializer = new XmlSerializer (typeof(AreaDescriptionMesh));
 			FileStream file = File.Open (m_meshSavePath + "/" + uuid, FileMode.Open);
 			AreaDescriptionMesh saveMesh = serializer.Deserialize (file) as AreaDescriptionMesh;
@@ -811,6 +725,21 @@ public GameObject m_viewMeshButton;
 		return input;
 	}
 
+	public void Button_placeRandomMarker() {
+		RaycastHit hit;
+		bool foundSomeWhere = false;
+		while (!foundSomeWhere) {
+			Vector3 randomVector = new Vector3 (UnityEngine.Random.Range (-1.0f, 1.0f), UnityEngine.Random.Range (-1.0f, 1.0f), UnityEngine.Random.Range (-1.0f, 1.0f));
+			Ray randomRay = new Ray (Camera.main.transform.position, randomVector);
+			if (Physics.Raycast (randomRay, out hit, Mathf.Infinity)) {
+				m_markerObject.SetActive (true);
+				m_markerObject.transform.position = hit.point;
+				m_markerObject.transform.up = hit.normal;
+				foundSomeWhere = true;
+			}
+		}
+	}
+
 	public void Button_StartRecord (){
 		m_stopRecordButton.SetActive (true);
 		m_startRecordButton.SetActive (false);
@@ -835,10 +764,7 @@ public GameObject m_viewMeshButton;
 		m_hideDebug.SetActive (true);
 		m_showDebug.SetActive (false);
 		m_debugPanel.SetActive (true);
-
-		if (!m_meshObject.m_enableDebugUI) {
-			m_meshObject.m_enableDebugUI = true;
-		}
+		m_meshObject.m_enableDebugUI = true;
 	}
 
 	public void Button_HideDebug (){
@@ -846,10 +772,7 @@ public GameObject m_viewMeshButton;
 		m_showDebug.SetActive (true);
 		m_hideDebug.SetActive (false);
 		m_debugPanel.SetActive (false);
-
-		if (m_meshObject.m_enableDebugUI) {
-			m_meshObject.m_enableDebugUI = false;
-		}
+		m_meshObject.m_enableDebugUI = false;
 	}
 		
 	public void toggleSettings (){
@@ -866,99 +789,246 @@ public GameObject m_viewMeshButton;
 	private string waitAndGetUserInput(string placeholderText) {
 
 		TouchScreenKeyboard keyboard = TouchScreenKeyboard.Open (placeholderText, TouchScreenKeyboardType.Default);
-		while (TouchScreenKeyboard.visible) {
+		while (!keyboard.done && !keyboard.wasCanceled) {
 
 		}
-
-		if (keyboard.text == placeholderText) {
-			keyboard.text = DateTime.Now.ToString ();
-		} 
 		return(keyboard.text);
 	}
 
-	/// <summary>
-	/// Deletes the currently selected Area Description files
-	/// 
-	public void Button_DeleteSelectedAreaDescription ()
-	{
+	public void reloadLevel() {
+		#pragma warning disable 618
+		Application.LoadLevel (Application.loadedLevel);
+		#pragma warning restore 618
+	}
+
+	public void Button_DeleteSelectedAreaDescription() {
+
 		if (m_curAreaDescription != null) {
-			//save name for later prints
+
 			string name = m_curAreaDescription.GetMetadata ().m_name;
-			// Do the actual delete
 			m_curAreaDescription.Delete ();
-			// Make sure we can't interact with the list
 			m_createSelectedButton.interactable = false;
 			m_deleteSelectedButton.interactable = false;
 			m_startGameButton.interactable = false;
 			m_exportSelectedButton.interactable = false;
+			_PopulateAreaDescriptionUIList ();
+			AndroidHelper.ShowAndroidToastMessage ("Deleted Area Descripton " + name);
 			m_curAreaDescription = null;
 			m_savedUUID = null;
-			// Repopulate List and toast to our sucess
-			_PopulateAreaDescriptionUIList ();
-			AndroidHelper.ShowAndroidToastMessage ("Deleted Area Descripton \"" + name + "\"");
 		}
 	}
 
-	/// <summary>
-	/// Deletes the currently selected Area Description files
-	/// 
-	public void Button_SaveAreaDescritionMeshToObj ()
-	{
-		if (m_curAreaDescription != null) {
-			StartCoroutine (_DoSaveAreaDescritionMeshToObj (m_curAreaDescription));
+
+	private IEnumerator _DoSaveMeshOverFrames() {
+
+		int startNoUpdates = m_tangoDynamicMesh.NumQueuedMeshUpdates;
+
+		while (m_tangoDynamicMesh.NumQueuedMeshUpdates != 0) {
+			float percentage = Mathf.Abs (((m_tangoDynamicMesh.NumQueuedMeshUpdates / startNoUpdates) / startNoUpdates) * 100.0f);
+			m_savingText.text = "Finalising Mesh ... " + percentage.ToString() + "%";
+			yield return null;
 		}
-	}
+			
+		StringBuilder sb = new StringBuilder();
+		int startVertex = 0;
+		int numMesh = m_tangoDynamicMesh.m_meshes.Values.Count;
+		int count = 1;
 
-	private IEnumerator _DoSaveAreaDescritionMeshToObj (AreaDescription areaDescription)
-	{
-		if (TouchScreenKeyboard.visible) {
-			yield break;
-		}
+		foreach (TangoDynamicMesh.TangoSingleDynamicMesh tmesh in m_tangoDynamicMesh.m_meshes.Values) {
 
-		TouchScreenKeyboard kb = TouchScreenKeyboard.Open ("/sdcard/scatAR/Meshes", TouchScreenKeyboardType.Default, false);
+			m_savingText.text = "Saving Submeshes ... " + count.ToString() + " / " + numMesh.ToString();
 
-		while (!kb.done && !kb.wasCanceled) {
+			Mesh mesh = tmesh.m_mesh;
+			int meshVertices = 0;
+			sb.Append(string.Format("g {0}\n", tmesh.name));
+
+			// Vertices.
+			for (int i = 0; i < mesh.vertices.Length; i++)
+			{
+				meshVertices++;
+				Vector3 v = tmesh.transform.TransformPoint(mesh.vertices[i]);
+
+				// Include vertex colors as part of vertex point for applications that support it.
+				if (mesh.colors32.Length > 0)
+				{
+					float r = mesh.colors32[i].r / 255.0f;
+					float g = mesh.colors32[i].g / 255.0f;
+					float b = mesh.colors32[i].b / 255.0f;
+					sb.Append(string.Format("v {0} {1} {2} {3} {4} {5} 1.0\n", v.x, v.y, -v.z, r, g, b));
+				}
+				else
+				{
+					sb.Append(string.Format("v {0} {1} {2} 1.0\n", v.x, v.y, -v.z));
+				}
+			}
+				
+			sb.Append("\n");
+
+			yield return null;
+
+			// Normals.
+			if (mesh.normals.Length > 0)
+			{
+				foreach (Vector3 n in mesh.normals)
+				{
+					sb.Append(string.Format("vn {0} {1} {2}\n", n.x, n.y, -n.z));
+				}
+
+				sb.Append("\n");
+			}
+
+			// Texture coordinates.
+			if (mesh.uv.Length > 0)
+			{
+				foreach (Vector3 uv in mesh.uv)
+				{
+					sb.Append(string.Format("vt {0} {1}\n", uv.x, uv.y));
+				}
+
+				sb.Append("\n");
+			}
+
+			// Faces.
+			int[] triangles = mesh.triangles;
+			for (int j = 0; j < triangles.Length; j += 3)
+			{
+				sb.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n", triangles[j + 2] + 1 + startVertex, triangles[j + 1] + 1 + startVertex, triangles[j] + 1 + startVertex));
+			}
+
+			sb.Append("\n");
+			startVertex += meshVertices;
+			count++;
 			yield return null;
 		}
 
-		if (kb.done) {
-
-			if (!Directory.Exists (kb.text)) {
-				Directory.CreateDirectory (kb.text);
-			}
-
-			AreaDescriptionMesh TangoMesh = _DeserializeAreaDescriptionMesh (m_savedUUID);
-
-			AndroidHelper.ShowAndroidToastMessage ("Exporting mesh...");
-			StringBuilder sb = new StringBuilder ();
-			int meshVertices = 0;
-
-			//VERTS
-			for (int i = 0; i < TangoMesh.m_vertices.Length; i++) {
-				meshVertices++;
-				Vector3 v = TangoMesh.m_vertices [i]; 
-				sb.Append (string.Format ("v {0} {1} {2} 1.0\n", v.x, v.y, -v.z));
-			}
-			sb.Append ("\n");
-
-			// Faces.
-			int[] triangles = TangoMesh.m_triangles;
-			for (int j = 0; j < triangles.Length; j += 3) {
-				sb.Append (string.Format ("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n", triangles [j + 2] + 1, triangles [j + 1] + 1, triangles [j] + 1));
-			}
-
-			sb.Append ("\n");
-
-			string time = DateTime.Now.ToString ();
-			time = removeCharactersForFilePath (time);
-			string name = m_curAreaDescription.GetMetadata ().m_name;
-			name = removeCharactersForFilePath (name);
-
-			StreamWriter sw = new StreamWriter (kb.text + "/" + name + time + ".obj");
+		m_savingText.text = "Saving Mesh To File ... ";
+		using (StreamWriter sw = new StreamWriter (m_meshSavePath + "/" + "tempMesh.obj")) {
 			sw.AutoFlush = true;
 			sw.Write (sb.ToString ());
+			sw.Close ();
+		}
+	
+		yield return null;
+		StartCoroutine(_DoSaveAreaDescriptionAndReload());
+		yield return null;
+	}
 
-			AndroidHelper.ShowAndroidToastMessage ("Exported Mesh for Area Descripton \"" + m_curAreaDescription.GetMetadata ().m_name + "\"");
+	private IEnumerator _DoSaveAreaDescriptionAndReload ()
+	{
+		if (m_saveThread != null) {
+			yield break;
+		}
+			
+		// Disable interaction before saving.
+		m_initialized = false;
+
+		if (string.IsNullOrEmpty (m_savedUUID)) {
+			m_savingText.text = "Saving Area Description ... ";
+
+			m_saveThread = new Thread (delegate() {
+				m_curAreaDescription = AreaDescription.SaveCurrent ();
+
+				AreaDescription.Metadata metadata = m_curAreaDescription.GetMetadata ();
+				string placeHolderText = "Enter A Meaningful Name For This Area";
+				string userInput = waitAndGetUserInput(placeHolderText);
+
+				if(userInput == placeHolderText) {
+					userInput = DateTime.Now.ToString();
+				}
+				metadata.m_name = userInput;
+				metadata.m_dateTime = DateTime.Now;
+				m_savedUUID = m_curAreaDescription.m_uuid;    
+				m_curAreaDescription.SaveMetadata (metadata);
+
+				if(File.Exists(m_meshSavePath + "/" + "tempMesh.obj")) {
+					File.Move(m_meshSavePath + "/" + "tempMesh.obj",m_meshSavePath + "/" + m_savedUUID + ".obj");
+					}
+
+				reloadLevel();
+			
+			});
+			m_saveThread.Start ();
+
+		} else {
+			reloadLevel ();
 		}
 	}
+		
+	private bool loadOBJToUnity() {		
+		string path = "file://" + m_meshSavePath + "/" + m_savedUUID + ".obj"; 
+		Vector3 scale = new Vector3 (1, 1, 1);
+		Vector3 translate = Vector3.zero;
+		Quaternion rotate = Quaternion.identity;
+		bool goPerGroup = true;
+		bool subMeshPerGroup = false;
+		bool usesRightHanded = true;
+
+		StartCoroutine(DownloadAndImportFile(path, rotate, scale, translate, goPerGroup, subMeshPerGroup, usesRightHanded));
+		return true;
+
+	}
+
+	private IEnumerator DownloadAndImportFile(string url, Quaternion rotate, Vector3 scale, Vector3 translate, bool gameObjectPerGrp, bool subMeshPerGrp, bool usesRightHanded) {
+		string objString = null;
+
+		yield return StartCoroutine(DownloadFile(url, retval => objString = retval));
+
+		if(objString!=null && objString.Length>0) {
+			yield return StartCoroutine(ObjImporter.ImportInBackground(objString, null, null, rotate, scale, translate, retval => m_meshFromFile = retval, gameObjectPerGrp, subMeshPerGrp, usesRightHanded));
+			if (m_meshFromFile != null) {
+
+				// rename the object if needed
+				if (m_meshFromFile.name == "Imported OBJ file") {
+					m_meshFromFile.name = "AreaDescriptonMesh";
+				}
+				startAfterLoad ();
+			} else {
+				AndroidHelper.ShowAndroidToastMessage ("Failed to load mesh");
+				reloadLevel ();
+			}
+		}
+	}
+
+	private IEnumerator DownloadFile(string url, System.Action<string> result) {
+		WWW www = new WWW(url);
+		yield return www;
+		if(www.error!=null) {
+		} else {
+		}
+		result(www.text);
+	}
+
+	private void startAfterLoad() {
+
+		for (int i = 0; i < m_meshFromFile.transform.childCount; i++) {
+			GameObject child = m_meshFromFile.transform.GetChild (i).gameObject;
+			child.GetComponent<MeshFilter> ().mesh.RecalculateNormals ();
+			child.layer = LayerMask.NameToLayer("Occlusion");
+			child.GetComponent<MeshRenderer> ().material = m_depthMaskMat;
+			child.AddComponent<MeshCollider> ();
+		}
+
+		m_meshFromFile.transform.Rotate (new Vector3 (0, 180, 0));
+
+		m_3dReconstruction = true;
+
+		// Enable objects needed to use Area Description and mesh for occlusion.
+		m_arPoseController.gameObject.SetActive (true);
+		m_arPoseController.m_useAreaDescriptionPose = true;
+
+		// Disable unused components in tango application.
+		m_tangoApplication.m_areaDescriptionLearningMode = false;
+		m_tangoApplication.m_enableDepth = false;
+
+
+		// Load Area Description file.
+		m_curAreaDescription = AreaDescription.ForUUID (m_savedUUID);
+
+		m_savingPanel.SetActive (false);
+		m_meshInteractionPanel.SetActive (true);
+		m_relocalizeImage.gameObject.SetActive (true);
+
+		m_tangoApplication.Startup (m_curAreaDescription);
+	}
+
 }

@@ -56,7 +56,7 @@ public class DeviceConsole : MonoBehaviour
 		DebugLogs.Instance.OnLogsCleared	+= OnLogsCleared;
 
 		// Add the default console commands
-		DebugCommands.Instance.AddCommand("kk", kk, "Prints list of commands");
+		DebugCommands.Instance.AddCommand("rotateMesh", rotateMesh, "Rotate the mesh");
 
 		DebugCommands.Instance.AddCommand("help", PrintHelp, "Prints list of commands");
 		DebugCommands.Instance.AddCommand("clear", Clear, "Clears all text from the debug console");
@@ -157,7 +157,6 @@ public class DeviceConsole : MonoBehaviour
 	{
 		// Set its visibility
 		uiContainer.SetActive(visible);
-
 		if (commandInputField != null)
 		{
 			// Clear any user typed text
@@ -211,7 +210,7 @@ public class DeviceConsole : MonoBehaviour
 
 		commandInputField.text = "";
 
-		InputFieldObtainFocus();
+		//InputFieldObtainFocus();
 	}
 
 	#endregion
@@ -413,12 +412,25 @@ public class DeviceConsole : MonoBehaviour
 	}
 
 
-	private static void kk(string[] args) {
 
-		//canvasToFuckUp.SetActive (false);
+	private static void rotateMesh(string[] args) {
 
+		for(int i = 0; i < args.Length; i++)
+			print (args[i]);
 
+		GameObject theMesh = GameObject.Find ("AreaDescriptonMesh");
+
+		if(args.Length != 4) {
+
+			print ("ERR: Expecting x,y,z rotation seperated by spaces");
+				} else {
+
+			theMesh.transform.Rotate(new Vector3(float.Parse(args[1]) * 360,float.Parse(args[2]),float.Parse(args[3])));
+						
+				}
 	}
+
+
 
 	private static void PrintHelp(string[] args)
 	{

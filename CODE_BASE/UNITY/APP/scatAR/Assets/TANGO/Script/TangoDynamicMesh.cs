@@ -37,7 +37,7 @@ public class TangoDynamicMesh : MonoBehaviour, ITango3DReconstruction
     /// <summary>
     /// If set, debugging info is displayed.
     /// </summary>
-    public bool m_enableDebugUI = true;
+	public bool m_enableDebugUI = false;
 
     /// <summary>
     /// If set, grid indices will stop meshing when they have been sufficiently observed.
@@ -108,7 +108,7 @@ public class TangoDynamicMesh : MonoBehaviour, ITango3DReconstruction
     /// <summary>
     /// Hash table to quickly get access to a dynamic mesh based on its position.
     /// </summary>
-    private Dictionary<Tango3DReconstruction.GridIndex, TangoSingleDynamicMesh> m_meshes;
+    public Dictionary<Tango3DReconstruction.GridIndex, TangoSingleDynamicMesh> m_meshes;
 
     /// <summary>
     /// List of grid indices that need to get extracted.
@@ -338,75 +338,75 @@ public class TangoDynamicMesh : MonoBehaviour, ITango3DReconstruction
     /// <param name="filepath">File path to output the OBJ.</param>
     public void ExportMeshToObj(string filepath)
     {
-        AndroidHelper.ShowAndroidToastMessage("Exporting mesh...");
         StringBuilder sb = new StringBuilder();
         int startVertex = 0;
 
-        foreach (TangoSingleDynamicMesh tmesh in m_meshes.Values)
-        {
-            Mesh mesh = tmesh.m_mesh;
-            int meshVertices = 0;
-            sb.Append(string.Format("g {0}\n", tmesh.name));
+		foreach (TangoSingleDynamicMesh tmesh in m_meshes.Values) {
 
-            // Vertices.
-            for (int i = 0; i < mesh.vertices.Length; i++)
-            {
-                meshVertices++;
-                Vector3 v = tmesh.transform.TransformPoint(mesh.vertices[i]);
+		Mesh mesh = tmesh.m_mesh;
+		int meshVertices = 0;
+		sb.Append(string.Format("g {0}\n", tmesh.name));
 
-                // Include vertex colors as part of vertex point for applications that support it.
-                if (mesh.colors32.Length > 0)
-                {
-                    float r = mesh.colors32[i].r / 255.0f;
-                    float g = mesh.colors32[i].g / 255.0f;
-                    float b = mesh.colors32[i].b / 255.0f;
-                    sb.Append(string.Format("v {0} {1} {2} {3} {4} {5} 1.0\n", v.x, v.y, -v.z, r, g, b));
-                }
-                else
-                {
-                    sb.Append(string.Format("v {0} {1} {2} 1.0\n", v.x, v.y, -v.z));
-                }
-            }
+		// Vertices.
+		for (int i = 0; i < mesh.vertices.Length; i++)
+		{
+			meshVertices++;
+			Vector3 v = tmesh.transform.TransformPoint(mesh.vertices[i]);
 
-            sb.Append("\n");
+			// Include vertex colors as part of vertex point for applications that support it.
+			if (mesh.colors32.Length > 0)
+			{
+				float r = mesh.colors32[i].r / 255.0f;
+				float g = mesh.colors32[i].g / 255.0f;
+				float b = mesh.colors32[i].b / 255.0f;
+				sb.Append(string.Format("v {0} {1} {2} {3} {4} {5} 1.0\n", v.x, v.y, -v.z, r, g, b));
+			}
+			else
+			{
+				sb.Append(string.Format("v {0} {1} {2} 1.0\n", v.x, v.y, -v.z));
+			}
+		}
 
-            // Normals.
-            if (mesh.normals.Length > 0)
-            {
-                foreach (Vector3 n in mesh.normals)
-                {
-                    sb.Append(string.Format("vn {0} {1} {2}\n", n.x, n.y, -n.z));
-                }
+		sb.Append("\n");
 
-                sb.Append("\n");
-            }
+		// Normals.
+		if (mesh.normals.Length > 0)
+		{
+			foreach (Vector3 n in mesh.normals)
+			{
+				sb.Append(string.Format("vn {0} {1} {2}\n", n.x, n.y, -n.z));
+			}
 
-            // Texture coordinates.s
-            if (mesh.uv.Length > 0)
-            {
-                foreach (Vector3 uv in mesh.uv)
-                {
-                    sb.Append(string.Format("vt {0} {1}\n", uv.x, uv.y));
-                }
+			sb.Append("\n");
+		}
 
-                sb.Append("\n");
-            }
+		// Texture coordinates.
+		if (mesh.uv.Length > 0)
+		{
+			foreach (Vector3 uv in mesh.uv)
+			{
+				sb.Append(string.Format("vt {0} {1}\n", uv.x, uv.y));
+			}
 
-            // Faces.
-            int[] triangles = mesh.triangles;
-            for (int j = 0; j < triangles.Length; j += 3)
-            {
-                sb.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n", triangles[j + 2] + 1 + startVertex, triangles[j + 1] + 1 + startVertex, triangles[j] + 1 + startVertex));
-            }
+			sb.Append("\n");
+		}
 
-            sb.Append("\n");
-            startVertex += meshVertices;
-        }
+		// Faces.
+		int[] triangles = mesh.triangles;
+		for (int j = 0; j < triangles.Length; j += 3)
+		{
+			sb.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n", triangles[j + 2] + 1 + startVertex, triangles[j + 1] + 1 + startVertex, triangles[j] + 1 + startVertex));
+		}
 
-        StreamWriter sw = new StreamWriter(filepath);
-        sw.AutoFlush = true;
-        sw.Write(sb.ToString());
-        AndroidHelper.ShowAndroidToastMessage(string.Format("Exported: {0}", filepath));
+		sb.Append("\n");
+		startVertex += meshVertices;
+	}
+
+		using (StreamWriter sw = new StreamWriter (filepath)) {
+			sw.AutoFlush = true;
+			sw.Write (sb.ToString ());
+			sw.Close ();
+		}
     }
 
     /// <summary>
@@ -956,7 +956,7 @@ public class TangoDynamicMesh : MonoBehaviour, ITango3DReconstruction
     /// This caches the arrays for vertices, normals, colors, etc. to avoid putting extra pressure on the
     /// garbage collector.
     /// </summary>
-    private class TangoSingleDynamicMesh : MonoBehaviour
+    public class TangoSingleDynamicMesh : MonoBehaviour
     {
         /// <summary>
         /// The single mesh.

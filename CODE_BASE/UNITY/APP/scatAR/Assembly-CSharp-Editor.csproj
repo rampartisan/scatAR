@@ -71,18 +71,22 @@
      <None Include="Assets\TANGO\TangoPrefabs\Shaders\YUV2RGB.shader" />
      <None Include="Assets\TANGO\TangoSDK\Core\Shaders\RGB2YUV_CbCr.shader" />
      <None Include="Assets\Fonts\crimsonText\OFL.txt" />
+     <None Include="Assets\SimpleObj\Demo\Shaders\TextShaderZ.shader" />
      <None Include="Assets\TANGO\TangoPrefabs\Shaders\ARPostProcess.shader" />
      <None Include="Assets\Fonts\lora\OFL.txt" />
      <None Include="Assets\TANGO\TangoPrefabs\Shaders\TangoEnvironmentalLighting\EnvironmentalLightingSpecularBumped.shader" />
      <None Include="Assets\TANGO\TangoPrefabs\Shaders\TangoEnvironmentalLighting\TangoEnvironmentalLighting.cginc" />
+     <None Include="Assets\SimpleObj\ReadMe.txt" />
      <None Include="Assets\TANGO\TangoSDK\Core\Shaders\DepthEmulation.shader" />
      <None Include="Assets\TANGO\TangoSDK\Core\Shaders\RGB2YUV_Y.shader" />
      <None Include="Assets\Models\Materials\Shaders\OcclusionMesh.shader" />
      <None Include="Assets\Models\Materials\Shaders\OcclusionMask.shader" />
      <None Include="Assets\TANGO\TangoSDK\Core\Shaders\ColorCameraEmulation.shader" />
+     <None Include="Assets\SimpleObj\Demo\Shaders\UnlitNoFog.shader" />
      <None Include="Assets\TANGO\TangoPrefabs\Shaders\PointCloud_Occlusion.shader" />
      <None Include="Assets\Models\Materials\Shaders\TangoOcclusion.cginc" />
      <None Include="Assets\Plugins\Android\AndroidManifest.xml" />
+     <None Include="Assets\SimpleObj\Documentation.txt" />
      <None Include="Assets\TANGO\TangoPrefabs\Shaders\TangoEnvironmentalLighting\EnvironmentalLightingDiffuse.shader" />
  <Reference Include="UnityEditor.Advertisements">
  <HintPath>/Applications/Unity/Unity.app/Contents/UnityExtensions/Unity/Advertisements/Editor/UnityEditor.Advertisements.dll</HintPath>
