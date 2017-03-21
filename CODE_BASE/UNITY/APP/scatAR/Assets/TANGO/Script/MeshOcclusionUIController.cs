@@ -1031,4 +1031,17 @@ public GameObject m_viewMeshButton;
 		m_tangoApplication.Startup (m_curAreaDescription);
 	}
 
+	private void copyMeshToSD() {
+
+		if(File.Exists(m_meshSavePath + "/" + m_savedUUID+ ".obj")) {
+			AndroidHelper.ShowAndroidToastMessage("Exporting ...");
+
+			string path = waitAndGetUserInput("/sdcard/scatAR/Meshes");
+			File.Copy(m_meshSavePath + "/" + m_savedUUID+ ".obj", path + "/" + m_curAreaDescription.GetMetadata().m_name + ".obj"); 
+			AndroidHelper.ShowAndroidToastMessage("Exported " + m_curAreaDescription.GetMetadata().m_name + " to" + path);
+
+		}
+
+	}
+
 }
