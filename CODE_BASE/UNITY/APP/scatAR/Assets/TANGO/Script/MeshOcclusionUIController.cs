@@ -488,6 +488,7 @@ public GameObject m_viewMeshButton;
 	public void Button_Finalize ()
 	{
 		m_tangoApplication.Set3DReconstructionEnabled (false);
+
 		m_meshBuildPanel.SetActive (false);
 		m_savingPanel.SetActive(true);
 		m_savingText.text = ("Saving Mesh");
@@ -898,6 +899,7 @@ public GameObject m_viewMeshButton;
 			sb.Append("\n");
 			startVertex += meshVertices;
 			count++;
+			m_tangoApplication._ResetSleepTimeout ();
 			yield return null;
 		}
 
@@ -1031,15 +1033,27 @@ public GameObject m_viewMeshButton;
 		m_tangoApplication.Startup (m_curAreaDescription);
 	}
 
-	private void copyMeshToSD() {
 
-		if(File.Exists(m_meshSavePath + "/" + m_savedUUID+ ".obj")) {
-			AndroidHelper.ShowAndroidToastMessage("Exporting ...");
 
-			string path = waitAndGetUserInput("/sdcard/scatAR/Meshes");
-			File.Copy(m_meshSavePath + "/" + m_savedUUID+ ".obj", path + "/" + m_curAreaDescription.GetMetadata().m_name + ".obj"); 
-			AndroidHelper.ShowAndroidToastMessage("Exported " + m_curAreaDescription.GetMetadata().m_name + " to" + path);
+	private IEnumerator copyMesh() {
+		string path = "/sdcard/scatAR/Meshes/";
 
+		TouchScreenKeyboard keyboard = TouchScreenKeyboard.Open (path, TouchScreenKeyboardType.Default);
+
+		while (!keyboard.done && !keyboard.wasCanceled) {
+			yield return null;
+		}
+
+		File.Copy(m_meshSavePath + "/" + m_savedUUID+ ".obj", path + m_curAreaDescription.GetMetadata().m_name + ".obj"); 
+		AndroidHelper.ShowAndroidToastMessage("Exported " + m_curAreaDescription.GetMetadata().m_name + " to" + path);
+	}
+
+	public void Button_CopyMesh() {
+
+		if (File.Exists (m_meshSavePath + "/" + m_savedUUID + ".obj")) {
+			StartCoroutine (copyMesh());
+		} else {
+			AndroidHelper.ShowAndroidToastMessage ("Failed to Export, Mesh File Does not Exist");
 		}
 
 	}

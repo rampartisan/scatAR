@@ -981,7 +981,7 @@ namespace Tango
         /// <summary>
         /// Clears all current unresolved ux exceptions and updates the sleep timeout.
         /// </summary>
-		private void _ResetSleepTimeout()
+		public void _ResetSleepTimeout()
         {
             m_unresolvedUxExceptions.Clear();
             _UpdateSleepTimeout();

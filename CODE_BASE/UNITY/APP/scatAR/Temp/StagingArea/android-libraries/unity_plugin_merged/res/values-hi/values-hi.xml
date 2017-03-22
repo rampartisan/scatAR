@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_required">कार्रवाई आवश्यक</string>
+    <string name="connection_layout_message_still">स्थिर पकड़ें</string>
+    <string name="connection_layout_message_tight">कसकर पकड़ें</string>
+    <string name="device_not_responding_description">ऐप्लिकेशन बंद करके चालू करें या डिवाइस पुनः बूट करें.</string>
+    <string name="device_not_responding_title">सिस्टम अनुपलब्ध.</string>
+    <string description="Shown as system notification to hold the device at a suggested posture, in combination with &apos;hold_posture_forward/up/down&apos;." name="hold_posture_description">%s डिवाइस को इंगित करें.</string>
+    <string name="hold_posture_down">नीचे</string>
+    <string name="hold_posture_forward">आगे</string>
+    <string name="hold_posture_title">गलत झुकाव.</string>
+    <string name="hold_posture_up">ऊपर</string>
+    <string name="lying_on_surface_description">जारी रखने के लिए डिवाइस उठाएं.</string>
+    <string name="lying_on_surface_title">कैमरा अवरुद्ध किया गया.</string>
+    <string name="motion_track_description">सिस्टम को बहाल होने देने के लिए अच्छे से पकड़ें.</string>
+    <string name="motion_track_title">ट्रैकिंग अनुपलब्ध हो गई.</string>
+    <string name="moving_too_fast_description">गति कम करें और डिवाइस को अच्छे से पकड़ें.</string>
+    <string name="moving_too_fast_title">बहुत तेज़.</string>
+    <string name="not_enough_light_description">अच्छी रोशनी वाले क्षेत्रों में डिवाइस का उपयोग करें.</string>
+    <string name="not_enough_light_title">बहुत अंधेरा है.</string>
+    <string description="Shown as system notification to change the device&apos;s system runtime to &apos;ART&apos;, no need to translate &apos;ART&apos;." name="run_time_mismatch_description">सेटिंग > डेवलपर विकल्प पर जाएं और “ART का उपयोग करें” चुनें.</string>
+    <string name="run_time_mismatch_title">गलत कॉन्फ़िगरेशन.</string>
+    <string name="service_updated_check_updates">अपडेट देखें</string>
+    <string description="Shown as system notification to update Tango Core, which is a system library, no need to translate &apos;Tango Core&apos;." name="service_updated_description">नवीनतम टैंगो कोर पर अपडेट करें.</string>
+    <string description="No need to translate &apos;Tango Core&apos;." name="service_updated_linkify">टैंगो कोर</string>
+    <string name="service_updated_title">असंगत वर्शन.</string>
+    <string name="space_not_recognized_description">डिवाइस को किसी दूसरी ओर इंगित करें.</string>
+    <string name="space_not_recognized_title">स्थान को पहचाना नहीं गया.</string>
+    <string name="too_much_light_description">चमकदार रोशनी को इंगित करने से बचें.</string>
+    <string name="too_much_light_title">बहुत रोशनी है.</string>
+    <string name="unable_to_detect_surface_description">डिवाइस को वस्तुओं से कम से कम एक हाथ की दूरी पर रखें.</string>
+    <string name="unable_to_detect_surface_title">कुछ भी नहीं मिला.</string>
+</resources>

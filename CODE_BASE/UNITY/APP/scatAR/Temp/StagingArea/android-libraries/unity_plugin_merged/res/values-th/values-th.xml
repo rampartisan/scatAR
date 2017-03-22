@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_required">ต้องดำเนินการ</string>
+    <string name="connection_layout_message_still">จับให้นิ่ง</string>
+    <string name="connection_layout_message_tight">จับให้แน่น</string>
+    <string name="device_not_responding_description">รีสตาร์ทแอปหรือเริ่มต้นอุปกรณ์ใหม่</string>
+    <string name="device_not_responding_title">ระบบไม่พร้อมใช้งาน</string>
+    <string description="Shown as system notification to hold the device at a suggested posture, in combination with &apos;hold_posture_forward/up/down&apos;." name="hold_posture_description">ชี้อุปกรณ์%s</string>
+    <string name="hold_posture_down">ลง</string>
+    <string name="hold_posture_forward">ส่งต่อ</string>
+    <string name="hold_posture_title">เอียงไม่ถูกด้าน</string>
+    <string name="hold_posture_up">ขึ้น</string>
+    <string name="lying_on_surface_description">หยิบอุปกรณ์ขึ้นมาเพื่อดำเนินการต่อ</string>
+    <string name="lying_on_surface_title">กล้องถ่ายรูปถูกบล็อก</string>
+    <string name="motion_track_description">จับให้มั่นเพื่อกู้คืนระบบ</string>
+    <string name="motion_track_title">สูญเสียการติดตาม</string>
+    <string name="moving_too_fast_description">ค่อยๆ และจับอุปกรณ์ให้มั่น</string>
+    <string name="moving_too_fast_title">เร็วเกินไป</string>
+    <string name="not_enough_light_description">ใช้อุปกรณ์ในที่ที่มีแสงสว่างเพียงพอ</string>
+    <string name="not_enough_light_title">มืดเกินไป</string>
+    <string description="Shown as system notification to change the device&apos;s system runtime to &apos;ART&apos;, no need to translate &apos;ART&apos;." name="run_time_mismatch_description">ไปที่การตั้งค่า > ตัวเลือกสำหรับนักพัฒนาซอฟต์แวร์และเลือก \"Use ART\"</string>
+    <string name="run_time_mismatch_title">การกำหนดค่าไม่ถูกต้อง</string>
+    <string name="service_updated_check_updates">ตรวจหาอัปเดต</string>
+    <string description="Shown as system notification to update Tango Core, which is a system library, no need to translate &apos;Tango Core&apos;." name="service_updated_description">อัปเดตเป็น Tango Core เวอร์ชันล่าสุด</string>
+    <string description="No need to translate &apos;Tango Core&apos;." name="service_updated_linkify">Tango Core</string>
+    <string name="service_updated_title">เวอร์ชันใช้ร่วมกันไม่ได้</string>
+    <string name="space_not_recognized_description">ชี้อุปกรณ์ไปที่อื่น</string>
+    <string name="space_not_recognized_title">ไม่รู้จักพื้นที่นี้</string>
+    <string name="too_much_light_description">หลีกเลี่ยงการชี้ไปที่แสงจ้า</string>
+    <string name="too_much_light_title">สว่างเกินไป</string>
+    <string name="unable_to_detect_surface_description">วางอุปกรณ์ให้ห่างจากวัตถุอย่างน้อย 1 ช่วงแขน</string>
+    <string name="unable_to_detect_surface_title">ไม่พบอะไร</string>
+</resources>

@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_required">Nepieciešama rīcība</string>
+    <string name="connection_layout_message_still">Nekustiniet</string>
+    <string name="connection_layout_message_tight">Turiet stingri</string>
+    <string name="device_not_responding_description">Restartējiet lietotni vai atkārtoti palaidiet ierīci.</string>
+    <string name="device_not_responding_title">Sistēma nav pieejama</string>
+    <string description="Shown as system notification to hold the device at a suggested posture, in combination with &apos;hold_posture_forward/up/down&apos;." name="hold_posture_description">Pavērsiet ierīci %s.</string>
+    <string name="hold_posture_down">uz leju</string>
+    <string name="hold_posture_forward">uz priekšu</string>
+    <string name="hold_posture_title">Nepareizs slīpums</string>
+    <string name="hold_posture_up">uz augšu</string>
+    <string name="lying_on_surface_description">Paceliet ierīci, lai turpinātu.</string>
+    <string name="lying_on_surface_title">Kamera bloķēta</string>
+    <string name="motion_track_description">Nekustieties, lai ļautu sistēmai atjaunot darbību.</string>
+    <string name="motion_track_title">Zaudēts savienojums</string>
+    <string name="moving_too_fast_description">Palēniniet kustību un nekustīgi turiet ierīci.</string>
+    <string name="moving_too_fast_title">Pārāk ātri!</string>
+    <string name="not_enough_light_description">Izmantojiet ierīci labi apgaismotās vietās.</string>
+    <string name="not_enough_light_title">Pārāk tumšs</string>
+    <string description="Shown as system notification to change the device&apos;s system runtime to &apos;ART&apos;, no need to translate &apos;ART&apos;." name="run_time_mismatch_description">Pārejiet uz sadaļu Iestatījumi > Izstrādātāja opcijas un atlasiet “Izmantot ART”.</string>
+    <string name="run_time_mismatch_title">Nepareiza konfigurācija</string>
+    <string name="service_updated_check_updates">Pārbaudiet, vai ir pieejami atjauninājumi.</string>
+    <string description="Shown as system notification to update Tango Core, which is a system library, no need to translate &apos;Tango Core&apos;." name="service_updated_description">Atjauniniet uz jaunāko Tango Core versiju.</string>
+    <string description="No need to translate &apos;Tango Core&apos;." name="service_updated_linkify">Tango Core</string>
+    <string name="service_updated_title">Nesaderīga versija</string>
+    <string name="space_not_recognized_description">Pavērsiet ierīci citā virzienā.</string>
+    <string name="space_not_recognized_title">Vieta netika atpazīta</string>
+    <string name="too_much_light_description">Nevērsiet ierīci pret spilgtu gaismu.</string>
+    <string name="too_much_light_title">Pārāk spilgts</string>
+    <string name="unable_to_detect_surface_description">Turiet ierīci vismaz rokas garuma attālumā no objektiem.</string>
+    <string name="unable_to_detect_surface_title">Nekas netika noteikts</string>
+</resources>

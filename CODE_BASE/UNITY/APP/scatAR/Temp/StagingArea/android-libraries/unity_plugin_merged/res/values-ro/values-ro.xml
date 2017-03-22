@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_required">Acțiune necesară</string>
+    <string name="connection_layout_message_still">Nu vă mișcați</string>
+    <string name="connection_layout_message_tight">Țineți bine</string>
+    <string name="device_not_responding_description">Reporniți aplicația sau reporniți dispozitivul.</string>
+    <string name="device_not_responding_title">Sistemul nu este disponibil.</string>
+    <string description="Shown as system notification to hold the device at a suggested posture, in combination with &apos;hold_posture_forward/up/down&apos;." name="hold_posture_description">Îndreptați dispozitivul %s.</string>
+    <string name="hold_posture_down">în jos</string>
+    <string name="hold_posture_forward">redirecționați</string>
+    <string name="hold_posture_title">Înclinare incorectă.</string>
+    <string name="hold_posture_up">în sus</string>
+    <string name="lying_on_surface_description">Ridicați dispozitivul pentru a continua.</string>
+    <string name="lying_on_surface_title">Camera este blocată.</string>
+    <string name="motion_track_description">Țineți nemișcat pentru a permite sistemului să recupereze.</string>
+    <string name="motion_track_title">S-a pierdut detectarea mișcării.</string>
+    <string name="moving_too_fast_description">Încetiniți și țineți dispozitivul nemișcat.</string>
+    <string name="moving_too_fast_title">Prea repede</string>
+    <string name="not_enough_light_description">Folosiți dispozitivul în zone bine iluminate.</string>
+    <string name="not_enough_light_title">Prea întunecat.</string>
+    <string description="Shown as system notification to change the device&apos;s system runtime to &apos;ART&apos;, no need to translate &apos;ART&apos;." name="run_time_mismatch_description">Accesați Setări > Opțiunile dezvoltatorului și selectați „Folosiți ART”.</string>
+    <string name="run_time_mismatch_title">Configurație incorectă.</string>
+    <string name="service_updated_check_updates">Verificați dacă există actualizări.</string>
+    <string description="Shown as system notification to update Tango Core, which is a system library, no need to translate &apos;Tango Core&apos;." name="service_updated_description">Actualizați la ultima versiune Tango Core.</string>
+    <string description="No need to translate &apos;Tango Core&apos;." name="service_updated_linkify">Tango Core</string>
+    <string name="service_updated_title">Versiune incompatibilă.</string>
+    <string name="space_not_recognized_description">Îndreptați dispozitivul în altă direcție.</string>
+    <string name="space_not_recognized_title">Spațiul nu a fost recunoscut.</string>
+    <string name="too_much_light_description">Evitați să îndreptați spre surse de lumină puternică.</string>
+    <string name="too_much_light_title">Prea luminos.</string>
+    <string name="unable_to_detect_surface_description">Țineți dispozitivul la cel puțin o lungime de braț departe de obiecte.</string>
+    <string name="unable_to_detect_surface_title">Nu s-a detectat nimic.</string>
+</resources>

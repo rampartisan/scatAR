@@ -2,10 +2,16 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/TANGO/Script/MeshOcclusionUIController.cs">
     <Files>
-      <File FileName="Assets/TANGO/Script/MeshOcclusionUIController.cs" Line="975" Column="30" />
-      <File FileName="Assets/TANGO/Script/TangoDynamicMesh.cs" Line="223" Column="1" />
-      <File FileName="Assets/OBJ/src/OBJ.cs" Line="90" Column="8" />
+      <File FileName="Assets/TANGO/Script/MeshOcclusionUIController.cs" Line="1037" Column="58" NotebookId="1" />
+      <File FileName="Assets/SimpleObj/ObjImporter.cs" Line="79" Column="2" NotebookId="1" />
     </Files>
+    <FloatingWindows>
+      <FloatingWindow WindowId="1" X="840" Y="22" Width="840" Height="1001">
+        <Files>
+          <File FileName="Assets/TANGO/Script/TangoDynamicMesh.cs" Line="181" Column="28" />
+        </Files>
+      </FloatingWindow>
+    </FloatingWindows>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
     <BreakpointStore>
