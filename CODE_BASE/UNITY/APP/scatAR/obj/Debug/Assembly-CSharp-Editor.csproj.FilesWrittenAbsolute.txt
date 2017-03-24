@@ -30,3 +30,9 @@
 /Users/Alex/AAU/THESIS/CODE_BASE/UNITY/APP/scatAR/Temp/bin/Debug/Mono.Cecil.Mdb.dll
 /Users/Alex/AAU/THESIS/CODE_BASE/UNITY/APP/scatAR/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.dll
 /Users/Alex/AAU/THESIS/CODE_BASE/UNITY/APP/scatAR/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.xml
+/Users/Alex/AAU/THESIS/CODE_BASE/UNITY/APP/scatAR/Temp/bin/Debug/Assembly-CSharp-Editor.dll.mdb
+/Users/Alex/AAU/THESIS/CODE_BASE/UNITY/APP/scatAR/Temp/bin/Debug/Assembly-CSharp-Editor.dll
+/Users/Alex/AAU/THESIS/CODE_BASE/UNITY/APP/scatAR/obj/Debug/Assembly-CSharp-Editor.dll
+/Users/Alex/AAU/THESIS/CODE_BASE/UNITY/APP/scatAR/obj/Debug/Assembly-CSharp-Editor.dll.mdb
+/Users/Alex/AAU/THESIS/CODE_BASE/UNITY/APP/scatAR/Temp/bin/Debug/Assembly-CSharp.dll
+/Users/Alex/AAU/THESIS/CODE_BASE/UNITY/APP/scatAR/Temp/bin/Debug/Assembly-CSharp.dll.mdb

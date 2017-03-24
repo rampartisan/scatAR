@@ -126,7 +126,9 @@ namespace Tango
         public bool m_enableADFLoading = false;
 
         public bool m_enable3DReconstruction = false;
-        public float m_3drResolutionMeters = 0.1f;
+
+		public float m_3drResolutionMeters = 0.1f;
+
         public bool m_3drGenerateColor = false;
         public bool m_3drGenerateNormal = false;
         public bool m_3drGenerateTexCoord = false;
@@ -408,7 +410,7 @@ namespace Tango
         {
             return m_yuvTexture;
         }
-
+			
         /// <summary>
         /// Register to get Tango callbacks.
         ///

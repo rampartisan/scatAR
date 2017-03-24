@@ -117,7 +117,7 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 	/// <summary>
 /// The canvas button that changes the mesh to a visible material.
 /// </summary>
-public GameObject m_viewMeshButton;
+	public GameObject m_viewMeshButton;
 
 	/// <summary>
 	/// The canvas button that change the mesh to depth mask.
@@ -169,6 +169,8 @@ public GameObject m_viewMeshButton;
 	/// The button to begin using an Area Description and mesh. Interactable only when an Area Description with mesh is selected.
 	/// </summary>
 	public Button m_startGameButton;
+
+	public InputField m_tangoResolutionInput;
 
 	/// <summary>
 	/// The reference to the depth mask material to be applied to the mesh.
@@ -244,6 +246,7 @@ public GameObject m_viewMeshButton;
 	/// </summary>
 	public void Start ()
 	{
+
 		m_meshSavePath = Application.persistentDataPath + "/meshes";
 		Directory.CreateDirectory (m_meshSavePath);
 
@@ -775,7 +778,7 @@ public GameObject m_viewMeshButton;
 		m_debugPanel.SetActive (false);
 		m_meshObject.m_enableDebugUI = false;
 	}
-		
+
 	public void toggleSettings (){
 		
 		settingsState = !settingsState;
@@ -786,7 +789,7 @@ public GameObject m_viewMeshButton;
 			m_settingsPanel.SetActive (false);
 		}
 	}
-
+		
 	private string waitAndGetUserInput(string placeholderText) {
 
 		TouchScreenKeyboard keyboard = TouchScreenKeyboard.Open (placeholderText, TouchScreenKeyboardType.Default);

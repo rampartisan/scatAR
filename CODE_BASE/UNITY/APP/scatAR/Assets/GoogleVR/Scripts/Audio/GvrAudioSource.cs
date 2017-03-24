@@ -22,6 +22,8 @@ public class GvrAudioSource : MonoBehaviour {
   /// Denotes whether the room effects should be bypassed.
   public bool bypassRoomEffects = false;
 
+	public bool spatializePostEffects = true;
+
   /// Directivity pattern shaping factor.
   public float directivityAlpha = 0.0f;
 
@@ -263,6 +265,7 @@ public class GvrAudioSource : MonoBehaviour {
       // Ensure the audio source gets created once.
       audioSource = gameObject.AddComponent<AudioSource>();
     }
+		audioSource.spatializePostEffects = spatializePostEffects;
     audioSource.enabled = false;
     audioSource.hideFlags = HideFlags.HideInInspector | HideFlags.HideAndDontSave;
     audioSource.playOnAwake = false;

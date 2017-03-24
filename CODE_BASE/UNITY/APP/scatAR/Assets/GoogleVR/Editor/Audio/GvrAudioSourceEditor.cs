@@ -34,6 +34,7 @@ public class GvrAudioSourceEditor : Editor {
   private SerializedProperty maxDistance = null;
   private SerializedProperty minDistance = null;
   private SerializedProperty bypassRoomEffects = null;
+	private SerializedProperty spatializePostEffects = null;
   private SerializedProperty directivityAlpha = null;
   private SerializedProperty directivitySharpness = null;
   private SerializedProperty listenerDirectivityAlpha = null;
@@ -72,6 +73,8 @@ public class GvrAudioSourceEditor : Editor {
       "Play the sound when the scene loads.");
   private GUIContent bypassRoomEffectsLabel = new GUIContent("Bypass Room Effects",
       "Sets whether the room effects for the source should be bypassed.");
+	private GUIContent spatializePostEffectsLabel = new GUIContent("Spatialize Post Effects",
+		"Sets whether the source is spatialized before/after effects");
   private GUIContent directivityLabel = new GUIContent("Directivity",
       "Controls the pattern of sound emission of the source. This can change the perceived " +
       "loudness of the source depending on which way it is facing relative to the listener. " +
@@ -119,6 +122,7 @@ public class GvrAudioSourceEditor : Editor {
     directivitySharpness = serializedObject.FindProperty("directivitySharpness");
     listenerDirectivityAlpha = serializedObject.FindProperty("listenerDirectivityAlpha");
     listenerDirectivitySharpness = serializedObject.FindProperty("listenerDirectivitySharpness");
+		spatializePostEffects = serializedObject.FindProperty ("spatializePostEffects");
     directivityTexture = Texture2D.blackTexture;
     gainDb = serializedObject.FindProperty("gainDb");
     hrtfEnabled = serializedObject.FindProperty("hrtfEnabled");
@@ -141,6 +145,8 @@ public class GvrAudioSourceEditor : Editor {
 
     EditorGUILayout.PropertyField(mute, muteLabel);
     EditorGUILayout.PropertyField(bypassRoomEffects, bypassRoomEffectsLabel);
+		EditorGUILayout.PropertyField(spatializePostEffects, spatializePostEffectsLabel);
+
     EditorGUILayout.PropertyField(playOnAwake, playOnAwakeLabel);
     EditorGUILayout.PropertyField(loop, loopLabel);
 
