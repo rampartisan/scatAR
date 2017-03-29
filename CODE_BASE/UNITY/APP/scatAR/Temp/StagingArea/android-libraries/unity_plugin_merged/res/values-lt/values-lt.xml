@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_required">Reikia imtis veiksmų</string>
+    <string name="connection_layout_message_still">Palaukite</string>
+    <string name="connection_layout_message_tight">Pakentėkite</string>
+    <string name="device_not_responding_description">Iš naujo paleiskite programą arba įrenginį.</string>
+    <string name="device_not_responding_title">Sistema nepasiekiama.</string>
+    <string description="Shown as system notification to hold the device at a suggested posture, in combination with &apos;hold_posture_forward/up/down&apos;." name="hold_posture_description">Nukreipkite įrenginį %s.</string>
+    <string name="hold_posture_down">žemyn</string>
+    <string name="hold_posture_forward">pirmyn</string>
+    <string name="hold_posture_title">Netinkamai pakreipta.</string>
+    <string name="hold_posture_up">aukštyn</string>
+    <string name="lying_on_surface_description">Paimkite įrenginį, kad galėtumėte tęsti.</string>
+    <string name="lying_on_surface_title">Kamera užblokuota.</string>
+    <string name="motion_track_description">Laikykite įrenginį stabiliai, kad leistumėte atkurti sistemą.</string>
+    <string name="motion_track_title">Stebėjimo veiksmas nutrūko.</string>
+    <string name="moving_too_fast_description">Judėkite lėčiau ir stabiliai laikykite įrenginį.</string>
+    <string name="moving_too_fast_title">Per greitai.</string>
+    <string name="not_enough_light_description">Naudokite įrenginį gerai apšviestose vietose.</string>
+    <string name="not_enough_light_title">Per tamsu.</string>
+    <string description="Shown as system notification to change the device&apos;s system runtime to &apos;ART&apos;, no need to translate &apos;ART&apos;." name="run_time_mismatch_description">Eikite į skiltį „Nustatymai“ > „Kūrėjo parinktys“ ir pasirinkite „Naudoti ART“.</string>
+    <string name="run_time_mismatch_title">Netinkama konfigūracija.</string>
+    <string name="service_updated_check_updates">Patikrinkite, ar yra naujinių</string>
+    <string description="Shown as system notification to update Tango Core, which is a system library, no need to translate &apos;Tango Core&apos;." name="service_updated_description">Atnaujinkite į naujausios versijos „Tango Core“.</string>
+    <string description="No need to translate &apos;Tango Core&apos;." name="service_updated_linkify">Tango Core</string>
+    <string name="service_updated_title">Nesuderinama versija.</string>
+    <string name="space_not_recognized_description">Nukreipkite įrenginį kur nors kitur.</string>
+    <string name="space_not_recognized_title">Erdvė neatpažinta.</string>
+    <string name="too_much_light_description">Nenukreipkite įrenginio į ryškią šviesą.</string>
+    <string name="too_much_light_title">Per šviesu.</string>
+    <string name="unable_to_detect_surface_description">Laikykite įrenginį bent jau per rankos ilgį nuo objektų.</string>
+    <string name="unable_to_detect_surface_title">Nieko neaptikta.</string>
+</resources>

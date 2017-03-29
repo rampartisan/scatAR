@@ -1,0 +1,2 @@
+int id android_view_container 0x7f030000
+int layout activity_main 0x7f020000

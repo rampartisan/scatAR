@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_required">En åtgärd krävs</string>
+    <string name="connection_layout_message_still">Håll enheten stilla</string>
+    <string name="connection_layout_message_tight">Håll enheten stadigt</string>
+    <string name="device_not_responding_description">Starta om appen eller enheten.</string>
+    <string name="device_not_responding_title">Systemet är inte tillgängligt.</string>
+    <string description="Shown as system notification to hold the device at a suggested posture, in combination with &apos;hold_posture_forward/up/down&apos;." name="hold_posture_description">Rikta enheten %s.</string>
+    <string name="hold_posture_down">nedåt</string>
+    <string name="hold_posture_forward">framåt</string>
+    <string name="hold_posture_title">Lutningen är felaktig.</string>
+    <string name="hold_posture_up">uppåt</string>
+    <string name="lying_on_surface_description">Plocka upp enheten om du vill fortsätta.</string>
+    <string name="lying_on_surface_title">Kameran är skymd.</string>
+    <string name="motion_track_description">Håll enheten stadigt så att systemet kan återställas.</string>
+    <string name="motion_track_title">Spårningen försvann.</string>
+    <string name="moving_too_fast_description">Rör dig långsammare och håll enheten stadigt.</string>
+    <string name="moving_too_fast_title">Du rör dig för snabbt.</string>
+    <string name="not_enough_light_description">Använd enheten i väl upplysta områden.</string>
+    <string name="not_enough_light_title">Det är för mörkt.</string>
+    <string description="Shown as system notification to change the device&apos;s system runtime to &apos;ART&apos;, no need to translate &apos;ART&apos;." name="run_time_mismatch_description">Öppna Inställningar > Utvecklaralternativ och markera Använd ART.</string>
+    <string name="run_time_mismatch_title">Konfigurationen är felaktig.</string>
+    <string name="service_updated_check_updates">Sök efter uppdateringar</string>
+    <string description="Shown as system notification to update Tango Core, which is a system library, no need to translate &apos;Tango Core&apos;." name="service_updated_description">Uppdatera till den senaste versionen av Tango Core.</string>
+    <string description="No need to translate &apos;Tango Core&apos;." name="service_updated_linkify">Tango Core</string>
+    <string name="service_updated_title">Versionen är inte kompatibel.</string>
+    <string name="space_not_recognized_description">Rikta enheten åt ett annat håll.</string>
+    <string name="space_not_recognized_title">Det går inte att känna igen utrymmet.</string>
+    <string name="too_much_light_description">Rikta inte enheten mot starka ljuskällor.</string>
+    <string name="too_much_light_title">Det är för ljust.</string>
+    <string name="unable_to_detect_surface_description">Håll enheten på åtminstone armlängds avstånd från föremålen.</string>
+    <string name="unable_to_detect_surface_title">Ingenting hittades.</string>
+</resources>

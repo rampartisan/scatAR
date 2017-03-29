@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_required">Exige la intervención del usuario</string>
+    <string name="connection_layout_message_still">No lo muevas</string>
+    <string name="connection_layout_message_tight">Agárralo bien</string>
+    <string name="device_not_responding_description">Reinicia la aplicación o el dispositivo.</string>
+    <string name="device_not_responding_title">El sistema no está disponible.</string>
+    <string description="Shown as system notification to hold the device at a suggested posture, in combination with &apos;hold_posture_forward/up/down&apos;." name="hold_posture_description">Apunta con el dispositivo hacia %s.</string>
+    <string name="hold_posture_down">abajo</string>
+    <string name="hold_posture_forward">adelante</string>
+    <string name="hold_posture_title">Inclinación incorrecta.</string>
+    <string name="hold_posture_up">arriba</string>
+    <string name="lying_on_surface_description">Para continuar, levanta el dispositivo.</string>
+    <string name="lying_on_surface_title">Cámara bloqueada.</string>
+    <string name="motion_track_description">Sujeta el dispositivo con firmeza para que se recupere el sistema.</string>
+    <string name="motion_track_title">Se ha perdido el seguimiento.</string>
+    <string name="moving_too_fast_description">Ve más despacio y sujeta el dispositivo con firmeza.</string>
+    <string name="moving_too_fast_title">Demasiado rápido.</string>
+    <string name="not_enough_light_description">Usa el dispositivo en sitios bien iluminados.</string>
+    <string name="not_enough_light_title">Demasiado oscuro.</string>
+    <string description="Shown as system notification to change the device&apos;s system runtime to &apos;ART&apos;, no need to translate &apos;ART&apos;." name="run_time_mismatch_description">Ve a Ajustes > Opciones para desarrolladores y selecciona Usar ART.</string>
+    <string name="run_time_mismatch_title">Configuración incorrecta.</string>
+    <string name="service_updated_check_updates">Ver si hay actualizaciones</string>
+    <string description="Shown as system notification to update Tango Core, which is a system library, no need to translate &apos;Tango Core&apos;." name="service_updated_description">Actualiza Tango Core a la última versión.</string>
+    <string description="No need to translate &apos;Tango Core&apos;." name="service_updated_linkify">Tango Core</string>
+    <string name="service_updated_title">Versión incompatible.</string>
+    <string name="space_not_recognized_description">Apunta con el dispositivo hacia otro sitio.</string>
+    <string name="space_not_recognized_title">Espacio no reconocido.</string>
+    <string name="too_much_light_description">No apuntes con el dispositivo hacia luces fuertes.</string>
+    <string name="too_much_light_title">Demasiada luz.</string>
+    <string name="unable_to_detect_surface_description">El dispositivo debe estar a un brazo de distancia de los objetos como mínimo.</string>
+    <string name="unable_to_detect_surface_title">No se detecta nada.</string>
+</resources>

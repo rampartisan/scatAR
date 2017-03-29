@@ -59,6 +59,7 @@
      <Compile Include="Assets\GoogleVR\Scripts\Pose3D.cs" />
      <Compile Include="Assets\Models\Materials\Textures\RelocalizingOverlay.cs" />
      <Compile Include="Assets\Scripts\audioRec.cs" />
+     <Compile Include="Assets\Scripts\findReflections.cs" />
      <Compile Include="Assets\SimpleObj\Demo\Examples.cs" />
      <Compile Include="Assets\SimpleObj\Demo\SimpleObjDemo.cs" />
      <Compile Include="Assets\SimpleObj\MeshExtensions.cs" />
