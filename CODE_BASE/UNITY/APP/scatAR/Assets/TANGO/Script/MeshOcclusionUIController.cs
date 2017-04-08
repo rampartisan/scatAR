@@ -150,6 +150,9 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 	/// </summary>
 	public GameObject m_hideDebug;
 
+	public GameObject m_freezeNetwork;
+	public GameObject m_unfreezeNetwork;
+
 	/// <summary>
 	/// The button to create new mesh with selected Area Description, available only if an Area Description is selected.
 	/// </summary>
@@ -169,6 +172,7 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 	/// The button to begin using an Area Description and mesh. Interactable only when an Area Description with mesh is selected.
 	/// </summary>
 	public Button m_startGameButton;
+
 
 	public InputField m_tangoResolutionInput;
 
@@ -241,12 +245,14 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 	/// </summary>
 	private string m_meshSavePath;
 
+	private SDN scatteringNetwork;
+
 	/// <summary>
 	/// Start is called on the frame when a script is enabled just before any of the Update methods is called the first time.
 	/// </summary>
 	public void Start ()
 	{
-
+		scatteringNetwork = m_markerObject.GetComponent<SDN> ();
 		m_meshSavePath = Application.persistentDataPath + "/meshes";
 		Directory.CreateDirectory (m_meshSavePath);
 
@@ -778,6 +784,23 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 		m_debugPanel.SetActive (false);
 		m_meshObject.m_enableDebugUI = false;
 	}
+
+	public void Button_FreezeNetwork() {
+		m_unfreezeNetwork.SetActive (true);
+		m_freezeNetwork.SetActive (false);
+		scatteringNetwork.freezeNetwork = true;
+
+
+	}
+
+	public void Button_UnFreezeNetwork() {
+		m_freezeNetwork.SetActive (true);
+		m_unfreezeNetwork.SetActive (false);
+		scatteringNetwork.freezeNetwork = false;
+
+
+	}
+
 
 	public void toggleSettings (){
 		
