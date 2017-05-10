@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="action_required">Peate tegema toimingu</string>
+    <string name="connection_layout_message_still">Hoidke paigal</string>
+    <string name="connection_layout_message_tight">Hoidke kindlalt</string>
+    <string name="device_not_responding_description">Taaskäivitage rakendus või seade.</string>
+    <string name="device_not_responding_title">Süsteem pole saadaval.</string>
+    <string description="Shown as system notification to hold the device at a suggested posture, in combination with &apos;hold_posture_forward/up/down&apos;." name="hold_posture_description">Suunake seade %s.</string>
+    <string name="hold_posture_down">alla</string>
+    <string name="hold_posture_forward">ettepoole</string>
+    <string name="hold_posture_title">Vale kalle.</string>
+    <string name="hold_posture_up">üles</string>
+    <string name="lying_on_surface_description">Jätkamiseks võtke seade kätte.</string>
+    <string name="lying_on_surface_title">Kaamera on blokeeritud.</string>
+    <string name="motion_track_description">Hoidke paigal, et süsteem saaks taastuda.</string>
+    <string name="motion_track_title">Jälgimine katkes.</string>
+    <string name="moving_too_fast_description">Vähendage kiirust ja hoidke seadet paigal.</string>
+    <string name="moving_too_fast_title">Liiga kiire.</string>
+    <string name="not_enough_light_description">Kasutage seadet hästi valgustatud kohas.</string>
+    <string name="not_enough_light_title">Liiga pime.</string>
+    <string description="Shown as system notification to change the device&apos;s system runtime to &apos;ART&apos;, no need to translate &apos;ART&apos;." name="run_time_mismatch_description">Avage menüü Seaded > Arendaja valikud ja tehke valik „Kasuta ART-i”.</string>
+    <string name="run_time_mismatch_title">Vale seadistus.</string>
+    <string name="service_updated_check_updates">Värskenduste kontrollimine</string>
+    <string description="Shown as system notification to update Tango Core, which is a system library, no need to translate &apos;Tango Core&apos;." name="service_updated_description">Värskendage rakenduse Tango Core uusimale versioonile.</string>
+    <string description="No need to translate &apos;Tango Core&apos;." name="service_updated_linkify">Tango Core</string>
+    <string name="service_updated_title">Ühildumatu versioon.</string>
+    <string name="space_not_recognized_description">Suunake seade mujale.</string>
+    <string name="space_not_recognized_title">Ruumi ei tuvastatud.</string>
+    <string name="too_much_light_description">Ärge osutage eredale valgusele.</string>
+    <string name="too_much_light_title">Liiga ere.</string>
+    <string name="unable_to_detect_surface_description">Hoidke seadet objektidest vähemalt käsivarre kaugusel.</string>
+    <string name="unable_to_detect_surface_title">Midagi ei tuvastatud.</string>
+</resources>

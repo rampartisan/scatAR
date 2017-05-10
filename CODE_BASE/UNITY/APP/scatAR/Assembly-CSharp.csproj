@@ -58,8 +58,14 @@
      <Compile Include="Assets\GoogleVR\Scripts\BaseAndroidDevice.cs" />
      <Compile Include="Assets\GoogleVR\Scripts\Pose3D.cs" />
      <Compile Include="Assets\Models\Materials\Textures\RelocalizingOverlay.cs" />
+     <Compile Include="Assets\Scripts\BiQuad.cs" />
      <Compile Include="Assets\Scripts\SDN.cs" />
+     <Compile Include="Assets\Scripts\SDNDraw.cs" />
      <Compile Include="Assets\Scripts\audioRec.cs" />
+     <Compile Include="Assets\Scripts\boundary.cs" />
+     <Compile Include="Assets\Scripts\procCube.cs" />
+     <Compile Include="Assets\Scripts\reflectionFinder.cs" />
+     <Compile Include="Assets\Scripts\reflectionPath.cs" />
      <Compile Include="Assets\SimpleObj\Demo\Examples.cs" />
      <Compile Include="Assets\SimpleObj\Demo\SimpleObjDemo.cs" />
      <Compile Include="Assets\SimpleObj\MeshExtensions.cs" />

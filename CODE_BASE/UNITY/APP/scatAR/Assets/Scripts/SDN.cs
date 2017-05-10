@@ -1,308 +1,740 @@
 ﻿using System.Collections;
+using System.Linq;
+
 using System.Collections.Generic;
 using UnityEngine;
 
-public class SDN : MonoBehaviour {
+public class SDN : MonoBehaviour
+{
 
-	public GameObject E_SDNListener;
+	public GameObject listener;
+	public boundary boundary;
 
 	public int targetNumReflections = 6;
+	public bool update = true;
+	public bool enableListen = true;
+	public bool doLateReflections = true;
 
-	public bool drawNetwork = true;
-	public bool freezeNetwork = false;
+	public delegate void newNetwork (List<SDNnode> network, reflectionPath directSound);
 
-	public GameObject debugDrawParent;
-	public Material directSoundMat;
-	public Material reflectionMat;
-	public Material junctionMat;
+	public event newNetwork onNewNetwork;
 
 	private reflectionFinder RF;
 
-	void Start () {
+	private reflectionPath directSound;
+	private delayLine directDelay;
 
-		RF = new reflectionFinder (this.gameObject,E_SDNListener,targetNumReflections);
+	private List<reflectionPath> reflections;
+	private List<SDNnode> network;
 
-		for (int i = 0; i < targetNumReflections + 1; i++) {
-			GameObject path = new GameObject ("debugDrawPath" + i.ToString ());
-			path.transform.SetParent (debugDrawParent.transform);
-			LineRenderer lr = path.AddComponent<LineRenderer> ();
-			lr.enabled = false;
-			lr.startWidth = 0.05f;
-			lr.endWidth = 0.05f;
+	private int sampleRate;
 
-			if (i > 0) {
-				GameObject junction = GameObject.CreatePrimitive (PrimitiveType.Cube);
-				junction.transform.localScale  = new Vector3(0.1f, 0.1f, 0.1f);
-				MeshRenderer mr = junction.GetComponent<MeshRenderer> ();
-				mr.enabled = false;
-				Destroy (junction.GetComponent<BoxCollider> ());				
-				junction.transform.SetParent (debugDrawParent.transform);
-				junction.name = "debugJunction" + i.ToString ();
-				mr.material = junctionMat;
+	private bool haveNewReflections = false;
+	private bool isProcessing = false;
 
-			}
-
-		}
-		
-	}
-
-	void OnDrawGizmos() {
-
-		if (RF != null) {
-			print (RF.basicDirections.Length);
-
-			foreach (Vector3 v in RF.basicDirections) {
-				Gizmos.DrawRay (this.transform.position, v);
-
-			}
-
-		}
-	}
-
-	void Update () {
-		
-		if (RF != null) {
-			if (!freezeNetwork) {
-				RF.updateAllPaths ();
-			}
-			if (drawNetwork) {
-				drawPaths ();
-				debugDrawParent.SetActive (true);
-			} else {
-				debugDrawParent.SetActive (false);
-
-			}
-		}
-	}
-
-	void drawPaths ()
+	void Start ()
 	{
-		int lrCount = 0;
-		int mrCount = 0;
-		LineRenderer[] lr = debugDrawParent.GetComponentsInChildren<LineRenderer> ();
-		MeshRenderer[] mr = debugDrawParent.GetComponentsInChildren<MeshRenderer> ();
+		AudioConfiguration AC = AudioSettings.GetConfiguration ();
+		sampleRate = AC.sampleRate;
 
-		if (RF.directSound.isValid) {
-			lr [lrCount].positionCount = 2;
-			lr [lrCount].SetPosition (0, RF.directSound.origin);
-			lr [lrCount].SetPosition (1, RF.directSound.destination);
-			lr[lrCount].material = directSoundMat;
-			lr [lrCount].enabled = true;
-			lrCount++;
+		delayLine.sampleRate = sampleRate;
+		int initalDirectDelay = delayLine.distanceToDelayTime (Vector3.Distance (gameObject.transform.position, listener.transform.position));
+		directDelay = new delayLine (3.0f, initalDirectDelay);
+
+		network = new List<SDNnode> ();
+		RF = gameObject.AddComponent<reflectionFinder> ();
+		RF.setListener (listener);
+		RF.setboundary (boundary);
+		RF.setNumInitalDirections (targetNumReflections);
+		RF.doUpdate = update;
+		RF.onNewReflections += handleNewReflections;
+	}
+		
+	void Update ()
+	{
+		if (update && !isProcessing && haveNewReflections) {
+			StartCoroutine (processReflections ());
+			directDelay.setDelay (delayLine.distanceToDelayTime (directSound.totalDistance ()));
 		}
+	}
 
-		foreach (path p in RF.reflections) {
+	public void clearAllDelays ()
+	{
+		directDelay.clear ();
+		foreach (SDNnode n in network) {
+			n.clearDelay ();
+			foreach (SDNConnection c in n.getConnections()) {
+				c.clearDelay ();
+			}
+		}
+	}
 
-			if (p.isValid) {
+	public void setNodeLoss(float loss) {
+		SDNnode.setLoss (loss);
+	}
 
-				lr [lrCount].positionCount = p.segments.Count + 1;
+	public void setNodeSpecularity(float spec) {
+		SDNnode.setSpecularity (spec);
+	}
+	public void setNodeWallAbs(float abs) {
+		SDNnode.setWallAbs (abs);
+	}
 
-				Vector3[] positions = new Vector3[p.segments.Count + 1];
+	public void coroutineHandler (IEnumerator coroutineMethod)
+	{
+		StartCoroutine (coroutineMethod);
+	}
 
-				for (int i = 0; i < positions.Length; i++) {
-					if (i < positions.Length - 1) {
-						positions[i] = p.segments [i].origin;
-					} else {
-						positions [i] = p.destination;
+	public List<SDNnode> getNetwork ()
+	{
+		return network;
+	}
+
+	public void enableAll ()
+	{
+		enableListen = true;
+		doLateReflections = true;
+	}
+
+	public void enableER ()
+	{
+		enableListen = true;
+		doLateReflections = false;
+	}
+
+	public void disableAll ()
+	{
+		enableListen = false;
+		doLateReflections = false;
+	}
+
+	void OnAudioFilterRead (float[] data, int channels)
+	{
+		if (directSound != null && network != null) {
+
+			int numSamps = data.Length / channels;
+
+			float[] monoIn = new float[numSamps];
+			float[] direct = new float[numSamps];
+
+			float[] monoOut = new float[numSamps];
+
+			for (int i = 0; i < numSamps; i++) {
+				for (int c = 0; c < channels; c++) {
+					monoIn [i] += data [(i * channels) + c];
+				}
+				monoIn [i] *= 1.0f / channels;
+			}
+
+			directDelay.write (monoIn);
+			directDelay.readToArray (ref direct);
+			delayLine.attenuateForDistance (ref direct, directSound.lengths [0]);
+
+			foreach (SDNnode n in network) {
+				n.inputIncoming (monoIn);
+				n.doScattering (monoIn.Length, doLateReflections);
+				n.getOutgoing (ref monoOut);
+			}
+			float att = 2.0f / network.Count;
+			for (int i = 0; i < numSamps; i++) {
+				monoOut [i] *= att;
+				monoOut [i] += direct [i];
+			}
+
+
+			if (enableListen) {
+				for (int i = 0; i < numSamps; i++) {
+					for (int c = 0; c < channels; c++) {
+						data [(i * channels) + c] = monoOut [i];
+					}
+				}
+			}
+		} 
+	}
+
+	void handleNewReflections (reflectionPath newDirectSound, List<reflectionPath> newReflections)
+	{
+		directSound = newDirectSound;
+		reflections = newReflections;
+		haveNewReflections = true;
+	}
+
+
+	private IEnumerator processReflections ()
+	{
+		isProcessing = true;
+		haveNewReflections = false;
+
+
+
+		foreach (SDNnode n in network.ToList()) {
+
+			if (reflections.Count > 0) {
+
+				int minDistIdx = 0;
+				float minDist = float.MaxValue;
+
+				for (int i = 0; i < reflections.Count; i++) {
+
+					float dist = Vector3.Distance (reflections [i].segments [1].origin, n.getPosition ());
+
+					if (dist < minDist) {
+						minDist = dist;
+						minDistIdx = i;
 					}
 				}
 
-				lr [lrCount].SetPositions (positions);
-				lr [lrCount].material = reflectionMat;
-				lr [lrCount].enabled = true;
+				n.updatePath (reflections [minDistIdx]);
+				reflections.RemoveAt (minDistIdx);
 
-				lrCount++;
-				mr [mrCount].gameObject.transform.position = p.segments [1].origin;
-				mr [mrCount].enabled = true;
-				mrCount++;
+			} else {
+				n.informConnectionDelete ();
+				network.Remove (n);
+
 			}
 		}
 
-		for (int i = lrCount; i < lr.Length; i++) {
-			lr [i].enabled = false;
+		if (reflections.Count > 0) {
+			foreach (reflectionPath p in reflections) {
+				network.Add (new SDNnode (p));
+			}
 		}
-		for (int i = mrCount; i < mr.Length; i++) {
+		yield return null;
 
-			mr [i].enabled = false;
+		for (int i = 0; i < network.Count; i++) {
+			for (int j = 1; j < network.Count; j++) {
+				int idx = (j + i) % network.Count;
+				if (!network [i].containsConnection (network [idx])) {
+					network [i].addConnection (network [idx]);
+				}
+			}
 		}
 
+		foreach (SDNnode n in network) {
+			n.findReverseConnections ();
+			n.updateConnectionDelay ();
+		}
+
+		yield return null;
+		onNewNetwork (network, directSound);
+		isProcessing = false;
 	}
 
-	private class path
+
+	public void setNumRef (int numRef)
 	{
-		public Vector3 origin;
-		public Vector3 destination;
-		public List<Ray> segments;
-		public List<float> lengths;
-		public bool isValid;
+		targetNumReflections = numRef;
+		RF.setNumInitalDirections (numRef);
+	}
 
-		public path (Vector3 sourcePos, Vector3 listenerPos)
+	public void setUpdateNetwork (bool val)
+	{
+		update = val;
+		RF.doUpdate = val;
+	}
+
+	public reflectionPath getDirectSound ()
+	{
+		return directSound;
+	}
+
+	public List<reflectionPath> getReflections ()
+	{
+		return reflections;
+	}
+
+	public class delayLine
+	{
+		public static int sampleRate;
+		public static float interpVal = 0.1f;
+		public static float airCoeff = 0.015f;
+
+		private int delayTime;
+		private int readPtr;
+		private int interpReadPtr;
+		private float interpFactor;
+		private bool doInterp;
+
+		private bool newInterpWaiting;
+		private int newInterpReadPtr;
+
+		private int writePtr;
+
+		private int capacity;
+		private float[] buffer;
+
+		public delayLine (float maxTimeInSeconds, int newDelayTime)
 		{
-			origin = sourcePos;
-			destination = listenerPos;
-			segments = new List<Ray> ();
-			lengths = new List<float> ();
-			isValid = false;
+			capacity = (int)(sampleRate * maxTimeInSeconds);
+			buffer = new float[capacity];
 
+			writePtr = 0;
+			interpFactor = 0.0f;
+			doInterp = false;
+			newInterpWaiting = false;
+
+			if (newDelayTime > capacity) {
+				print (string.Format ("delay time of {0} for buffer size of {1} is not possible", newDelayTime, capacity));
+				newDelayTime = capacity - 1;
+			}
+			if (newDelayTime < 0) {
+				newDelayTime = 1;
+			}
+			readPtr = writePtr - newDelayTime;
+
+			if (readPtr < 0) {
+				readPtr += capacity;
+			}
+
+			delayTime = newDelayTime;
 		}
 
 		public void clear ()
 		{
-			origin = Vector3.zero;
-			destination = Vector3.zero;
-			segments.Clear ();
-			lengths.Clear ();
-			isValid = false;
+
+			System.Array.Clear (buffer, 0, buffer.Length);
 
 		}
 
+		public int getDelayTime ()
+		{
+			return delayTime;
+		}
+
+		public void setDelay (int newDelayTime)
+		{
+			if (newDelayTime > capacity) {
+				print (string.Format ("delay time of {0} for buffer size of {1} is not possible", newDelayTime, capacity));
+				newDelayTime = capacity - 1;
+			}
+
+			if (newDelayTime < 0) {
+				newDelayTime = 1;
+			}
+
+			if (doInterp) {
+				newInterpWaiting = true;
+				if (newDelayTime != delayTime) {
+					newInterpReadPtr = writePtr - newDelayTime;
+					if (newInterpReadPtr < 0) {
+						newInterpReadPtr += capacity;
+					}
+					delayTime = newDelayTime;
+				}
+
+			} else {
+
+				if (newDelayTime != delayTime) {
+					interpReadPtr = writePtr - newDelayTime;
+					if (interpReadPtr < 0) {
+						interpReadPtr += capacity;
+					}
+					delayTime = newDelayTime;
+					doInterp = true;
+					interpFactor = 0.0f;
+				}
+			}
+		}
+
+		public void write (float[] samples)
+		{
+			for (int i = 0; i < samples.Length; i++) {
+				buffer [(writePtr + i) % capacity] = samples [i];
+			}
+
+			writePtr += samples.Length;
+			writePtr %= capacity;
+		}
+
+		public void readToArray (ref float[] outSamps)
+		{
+			if (newInterpWaiting && !doInterp) {
+				doInterp = true;
+				newInterpWaiting = false;
+				interpReadPtr = newInterpReadPtr;
+				interpVal = 0.0f;
+			}
+
+			if (doInterp) {
+				float val;
+				int startReadIdx = readPtr - outSamps.Length;
+				if (startReadIdx < 0) {
+					startReadIdx += capacity;
+				}
+				int startInterpIdx = interpReadPtr - outSamps.Length;
+				if (startInterpIdx < 0) {
+					startInterpIdx += capacity;
+				}
+				for (int i = 0; i < outSamps.Length; i++) {
+
+					val = (buffer [(startReadIdx + i) % capacity] * (1.0f - interpFactor)) + (buffer [(startInterpIdx + i) % capacity] * interpFactor);
+					outSamps [i] += val;
+
+				}
+				interpReadPtr += outSamps.Length;
+				interpReadPtr %= capacity;
+				interpFactor += interpVal;
+
+				if (interpFactor > 1.0f) {
+					readPtr = interpReadPtr;
+					interpFactor = 0.0f;
+					doInterp = false;
+				}
+
+			} else {
+
+				int startReadIdx = readPtr - outSamps.Length;
+				if (startReadIdx < 0) {
+					startReadIdx += capacity;
+				}
+
+				for (int i = 0; i < outSamps.Length; i++) {
+					outSamps [i] += buffer [(startReadIdx + i) % capacity];
+				}
+			}
+
+			readPtr += outSamps.Length;
+			readPtr %= capacity;
+		}
+
+		public float[] read (int numSamps)
+		{
+			if (newInterpWaiting && !doInterp) {
+				doInterp = true;
+				newInterpWaiting = false;
+				interpReadPtr = newInterpReadPtr;
+				interpVal = 0.0f;
+			}
+
+			float[] outSamps = new float[numSamps];
+			if (doInterp) {
+
+				float val;
+				int startReadIdx = readPtr - outSamps.Length;
+				if (startReadIdx < 0) {
+					startReadIdx += capacity;
+				}
+				int startInterpIdx = readPtr - outSamps.Length;
+				if (startInterpIdx < 0) {
+					startInterpIdx += capacity;
+				}
+
+				for (int i = 0; i < outSamps.Length; i++) {
+					val = (buffer [(startReadIdx + i) % capacity] * (1.0f - interpFactor)) + (buffer [(startInterpIdx + i) % capacity] * interpFactor);
+					outSamps [i] = val;
+
+				}
+				interpReadPtr += outSamps.Length;
+				interpReadPtr %= capacity;
+				interpFactor += interpVal;
+
+				if (interpFactor >= 1.0f) {
+					readPtr = interpReadPtr;
+					interpFactor = 0.0f;
+					doInterp = false;
+				}
+
+			} else {
+
+				int startReadIdx = readPtr - outSamps.Length;
+				if (startReadIdx < 0) {
+					startReadIdx += capacity;
+				}
+
+				for (int i = 0; i < outSamps.Length; i++) {
+					outSamps [i] = buffer [(startReadIdx + i) % capacity];
+				}
+			}
+			readPtr += outSamps.Length;
+			readPtr %= capacity;
+
+			return outSamps;
+		}
+
+		public static int distanceToDelayTime (float distance)
+		{
+			return (int)((distance * sampleRate) / 340.0f);
+
+		}
+
+		public static void attenuateForDistance (ref float[] samples, float distance)
+		{
+			float G = 340.0f / sampleRate;
+			float attFactor = 1.0f - (G / distance);
+			for (int i = 0; i < samples.Length; i++) {
+				samples [i] *= attFactor;
+			}
+		}
 	}
 
-	private class reflectionFinder
+	public class SDNnode
 	{
-		public Vector3[] simpleDirections = new Vector3[] {
-			Vector3.right,
-			Vector3.left,
-			Vector3.up,
-			Vector3.down,
-			Vector3.back,
-			Vector3.forward
-		};
+		private Vector3 position;
+		private List<SDNConnection> connections;
+		private reflectionPath nodePath;
 
-		public Vector3[] basicDirections;
+		private delayLine incoming;
+		private delayLine outgoing;
 
-		private GameObject source;
-		private GameObject listener;
+		private BiQuadFilter connectFilter;
+		private BiQuadFilter wallFilter;
 
-		public path directSound;
+		private float scatteringFactor;
+		private static float specularity = 0.55f;
+		private static float nodeLoss = 0.05f;
+		private static float wallAbsCoeff = 0.95f;
 
-		public List<path> reflections;
-
-		public reflectionFinder (GameObject sourceObject, GameObject listenerObject, int targetNumReflections)
+		public SDNnode (reflectionPath thePath)
 		{
-			basicDirections = new Vector3[targetNumReflections];
-			generateDirections();
+			wallFilter = BiQuadFilter.LowPassFilter (delayLine.sampleRate, 9000, 0.75f);
+			connectFilter = BiQuadFilter.LowPassFilter (delayLine.sampleRate, 9000, 0.75f);
 
-			source = sourceObject;
-			listener = listenerObject;
+			connections = new List<SDNConnection> ();
 
-			directSound = new path (source.transform.position, listener.transform.position);
-			directSound.segments.Add (new Ray (Vector3.zero, Vector3.zero));
-
-			reflections = new List<path> ();
-
-			updateAllPaths ();
+			nodePath = thePath;
+			position = nodePath.segments [1].origin;
+			incoming = new delayLine (3.0f, delayLine.distanceToDelayTime (nodePath.lengths [0]));
+			outgoing = new delayLine (3.0f, delayLine.distanceToDelayTime (nodePath.lengths [1]));
 		}
 
-		public void updateAllPaths ()
-
+		public void updatePath (reflectionPath thePath)
 		{
-			updateDirectSound ();
-			updateReflections ();
+			nodePath = thePath;
+			position = thePath.segments [1].origin;
+			incoming.setDelay (delayLine.distanceToDelayTime (nodePath.lengths [0]));
+			outgoing.setDelay (delayLine.distanceToDelayTime (nodePath.lengths [1]));
 		}
 
-		public void updateDirectSound ()
+		public void clearDelay ()
 		{
-			directSound.clear ();
+			incoming.clear ();
+			outgoing.clear ();
+		}
 
-			directSound.origin.Set (source.transform.position.x, source.transform.position.y, source.transform.position.z);
-			directSound.destination.Set (listener.transform.position.x, listener.transform.position.y, listener.transform.position.z);
-			directSound.segments.Add (new Ray (directSound.origin, directSound.destination - directSound.origin));
+		public static void setLoss(float loss) {
+			nodeLoss = loss;
+		}
 
-			float distance = Vector3.Distance (source.transform.position, listener.transform.position);
+		public static void setSpecularity(float spec) {
+			specularity = spec;
+		}
 
-			directSound.lengths.Add (distance);
-			RaycastHit hit;
+		public static void setWallAbs(float abs) {
+			nodeLoss = abs;
+		}
 
-			if (Physics.Raycast (directSound.segments [0], out hit, distance)) {
-				if (hit.collider.name == listener.name) {
-					directSound.isValid = true;
-				} 
+		public void inputIncoming (float[] samples)
+		{
+			incoming.write (samples);
+		}
+
+		public void getOutgoing (ref float[] outSamps)
+		{
+			outgoing.readToArray (ref outSamps);
+		}
+
+		public void doScattering (int numSamps, bool outputLateReflections)
+		{
+			float[] firstOrderSamples = incoming.read (numSamps);
+			delayLine.attenuateForDistance (ref firstOrderSamples, nodePath.lengths [0]);
+
+			for (int i = 0; i < numSamps; i++) {
+				firstOrderSamples [i] *= wallAbsCoeff;
+				firstOrderSamples [i] *= specularity - nodeLoss;
+				firstOrderSamples [i] = wallFilter.Transform (firstOrderSamples [i]);
+			}
+
+			float[] connectionSamples = new float[numSamps];
+			foreach (SDNConnection c in connections) {	
+				c.getSamplesFromReverseConnection (ref connectionSamples);
+			}
+
+			float[] outGoingSamples = new float[numSamps];
+			System.Array.Copy (firstOrderSamples, outGoingSamples, numSamps);
+
+			for (int i = 0; i < numSamps; i++) {
+
+				connectionSamples [i] = connectFilter.Transform (connectionSamples [i]);
+				outGoingSamples [i] += connectionSamples [i];
+				connectionSamples [i] *= scatteringFactor;
+				connectionSamples [i] += (firstOrderSamples [i] * ((1.0f - specularity) - nodeLoss)) * scatteringFactor;
+				connectionSamples [i] *= wallAbsCoeff;
+			}
+
+			foreach (SDNConnection c in connections) {
+				c.inputToDelay (connectionSamples);
+			}
+
+			if (outputLateReflections) {
+				delayLine.attenuateForDistance (ref outGoingSamples, nodePath.lengths [1]);
+				outgoing.write (outGoingSamples);
+			} else {
+				delayLine.attenuateForDistance (ref firstOrderSamples, nodePath.lengths [1]);
+				outgoing.write (firstOrderSamples);
 			}
 		}
 
-		public void updateReflections ()
+
+		public void updateScatteringFactor ()
 		{
-			reflections.Clear ();
+			scatteringFactor = 1.0f / connections.Count;
+		}
 
-			foreach (Vector3 dir in simpleDirections) {
-				Ray ray = new Ray (source.transform.position, dir);
-				RaycastHit hit;
-				if (Physics.Raycast (ray, out hit)) {
-					if (hit.collider.name != listener.name) {
+		public void updateConnectionDelay ()
+		{
+			foreach (SDNConnection c in connections) {
+				c.updateDelayLength ();
+			}
+		}
 
-						Vector3 planeNorm = hit.normal * -1.0f;
-						Vector3 imageSource = source.transform.position + (planeNorm * (hit.distance * 2.0f));
-						Ray imageSourceRay = new Ray (imageSource, listener.transform.position - imageSource);
+		public List<SDNConnection> getConnections ()
+		{
+			return connections;
+		}
 
-						float dot = Vector3.Dot (imageSourceRay.direction, dir);
-						float theta = dot / (Mathf.Abs (imageSourceRay.direction.magnitude) * Mathf.Abs (dir.magnitude));
-						float altitude = Mathf.Abs ((hit.distance * 2.0f) * Mathf.Sin (theta));
+		public void addConnection (SDNnode n)
+		{
+			connections.Add (new SDNConnection (this, n));
+			updateScatteringFactor ();
+		}
 
-						float len = Mathf.Sqrt (Mathf.Abs (Mathf.Pow (altitude, 2) - Mathf.Pow (hit.distance * 2.0f, 2)));
 
-						Vector3 reflectionPoint = imageSource + (imageSourceRay.direction.normalized * len);
-						path currPath = new path (source.transform.position, listener.transform.position);
-						currPath.segments.Add (new Ray (source.transform.position, reflectionPoint - source.transform.position));
-						currPath.segments.Add (new Ray (reflectionPoint, listener.transform.position - reflectionPoint));
-						currPath.lengths.Add (Vector3.Distance (source.transform.position, reflectionPoint));
-						currPath.lengths.Add (Vector3.Distance (reflectionPoint, listener.transform.position));
-						reflections.Add (currPath);
-					}
+		public void findReverseConnections ()
+		{
+			foreach (SDNConnection c in connections) {
+				SDNConnection theTarget = c.getTarget ().connections.Find (item => item.getTarget () == this);
+				c.setReverseConnection (ref theTarget);
+			}
+		}
+
+		public void informConnectionDelete ()
+		{
+			foreach (SDNConnection c in connections) {
+				SDNnode nodeToInform = c.getTarget ();
+				nodeToInform.connections.Remove (nodeToInform.connections.Find (item => item.getTarget () == this));
+				nodeToInform.updateScatteringFactor ();
+			}
+		}
+
+
+		public bool containsConnection (SDNnode n)
+		{
+			foreach (SDNConnection c in connections) {
+				if (c.getTarget ().Equals (n)) {
+					return true;
 				}
 			}
-			validatePaths ();
+			return false;
 		}
-			
-		public void validatePaths ()
+
+		public Vector3 getPosition ()
 		{
-			RaycastHit hit;
-			foreach (path p in reflections) {
-				bool valid = true;
-				for (int i = 0; i < p.segments.Count; i++) {
-					if (i == p.segments.Count - 1) {
-						if (Physics.Raycast (p.segments [i], out hit)) {
-							if (hit.collider.name != listener.name) {
-								valid = false;
-							} 
+			return position;
+		}
 
-						} else {
-							valid = false;
-						}
-					} else {
-						if (Physics.Raycast (p.segments [i], out hit)) {
-							if (hit.collider.name == listener.name) {
-								valid = false;
-							}
-						} else {
-							valid = false;
-						}
-					}
+		public int getIncomingDelayTime ()
+		{
+			return incoming.getDelayTime ();
+		}
 
-					p.isValid = valid;
+		public int getOutgoingDelayTime ()
+		{
+			return outgoing.getDelayTime ();
+		}
 
+		public int getTotalDelayTime ()
+		{
+			return outgoing.getDelayTime () + incoming.getDelayTime ();
+		}
+
+		public reflectionPath getPath ()
+		{
+			return nodePath;
+		}
+	}
+
+	public class SDNConnection
+	{
+
+		private SDNnode parent;
+		private SDNnode target;
+		private float length;
+		private delayLine delay;
+		private SDNConnection reverseConnection;
+
+		public SDNConnection (SDNnode theParent, SDNnode theTarget)
+		{
+			parent = theParent;
+			target = theTarget;
+			length = Vector3.Distance (parent.getPosition (), target.getPosition ());
+			delay = new delayLine (3.0f, delayLine.distanceToDelayTime (length));
+		}
+
+
+		public void clearDelay ()
+		{
+			delay.clear ();
+		}
+
+		public void setTarget (SDNnode n)
+		{
+			target = n;
+			updateDelayLength ();
+		}
+
+		public int getDelayTime ()
+		{
+			return delay.getDelayTime ();
+		}
+
+		public void inputToDelay (float[] samples)
+		{
+			delay.write (samples);
+		}
+
+		public void readFromDelay (ref float[] samples)
+		{
+			delay.readToArray (ref samples);
+		}
+
+		public void getSamplesFromReverseConnection (ref float[] samples)
+		{
+			if (reverseConnection != null) {
+
+				float[] temp = new float[samples.Length];
+				reverseConnection.readFromDelay (ref temp);
+				delayLine.attenuateForDistance (ref temp, samples.Length);
+
+				for (int i = 0; i < samples.Length; i++) {
+					samples [i] += temp [i];
 				}
-			}
+			} 
 		}
 
-		private void generateDirections() {
-
-			int numDirec = basicDirections.Length;
-
-			for (int i = 0; i < numDirec; i++) {
-
-				float phi = Mathf.Acos (-1 + (2 * i) / numDirec);
-				float theta = Mathf.Sqrt (numDirec * Mathf.PI) * phi;
-
-				float x = Mathf.Cos (theta) * Mathf.Sin (phi);
-				float y = Mathf.Sin (theta) * Mathf.Sin (phi);
-				float z = Mathf.Cos (phi);
-
-				basicDirections [i] = new Vector3 (x, y, z);
-
-
-			}
+		public SDNnode getTarget ()
+		{
+			return target;
 		}
 
+		public SDNnode getParent ()
+		{
+			return parent;
+		}
+
+		public float getLength ()
+		{
+			return length;
+		}
+
+		public void setReverseConnection (ref SDNConnection c)
+		{
+			reverseConnection = c;
+		}
+
+		public void updateDelayLength ()
+		{
+			length = Vector3.Distance (parent.getPosition (), target.getPosition ());
+			delay.setDelay (delayLine.distanceToDelayTime (length));
+		}
 	}
 }

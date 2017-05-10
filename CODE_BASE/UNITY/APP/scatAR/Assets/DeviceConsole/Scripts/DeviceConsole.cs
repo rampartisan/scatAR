@@ -7,6 +7,7 @@ using System.Collections.Specialized;
 public class DeviceConsole : MonoBehaviour
 {
 
+
 	#region Inspector Variables
 
 	[SerializeField] private GameObject		uiContainer;
@@ -57,6 +58,8 @@ public class DeviceConsole : MonoBehaviour
 
 		// Add the default console commands
 		DebugCommands.Instance.AddCommand("rotateMesh", rotateMesh, "Rotate the mesh");
+		DebugCommands.Instance.AddCommand("dist", dist, "Rotate the mesh");
+		DebugCommands.Instance.AddCommand("times", times, "Rotate the mesh");
 
 		DebugCommands.Instance.AddCommand("help", PrintHelp, "Prints list of commands");
 		DebugCommands.Instance.AddCommand("clear", Clear, "Clears all text from the debug console");
@@ -216,6 +219,8 @@ public class DeviceConsole : MonoBehaviour
 	#endregion
 
 	#region Private Methods
+
+
 
 	private void PrintToConsole(string text, DeviceLogUI prefab = null)
 	{
@@ -411,6 +416,26 @@ public class DeviceConsole : MonoBehaviour
 		}
 	}
 
+	private static void times(string[] args) {
+		List<SDN.SDNnode> nodes = GameObject.Find ("ARMarker").GetComponent<SDN> ().getNetwork();
+		int nodeIdx = 0;
+		foreach(SDN.SDNnode n in nodes) {
+			print ("node " + nodeIdx.ToString () + " " + n.getTotalDelayTime ().ToString ());
+			int connectIdx = 0;
+			foreach (SDN.SDNConnection c in n.getConnections()) {
+				print ("connection " + nodeIdx.ToString () + " " + connectIdx.ToString() + " "  + c.getDelayTime().ToString() );
+				connectIdx++;
+			}
+			nodeIdx++;
+		}
+	}
+
+
+
+	private static void dist(string[] args) {
+		SDNDraw draw = GameObject.Find ("ARMarker").GetComponent<SDNDraw> ();;
+		draw.showDistances = !draw.showDistances;
+	}
 
 
 	private static void rotateMesh(string[] args) {

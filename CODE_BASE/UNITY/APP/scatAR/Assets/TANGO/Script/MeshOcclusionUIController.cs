@@ -39,7 +39,7 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 	/// </summary>
 	[Header ("Marker Objects")]
 	public GameObject m_markerObject;
-
+	public boundary m_boundaryObject;
 	/// <summary>
 	/// The Tango Camera Object.
 	/// </summary>
@@ -114,6 +114,13 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 	public ToggleGroup m_toggleGroup;
 
 	[Header ("UI Buttons")]
+
+	public GameObject m_enableAllAudioButton;
+	public GameObject m_enableERButton;
+	public GameObject m_disableAllButton;
+
+
+
 	/// <summary>
 /// The canvas button that changes the mesh to a visible material.
 /// </summary>
@@ -123,6 +130,15 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 	/// The canvas button that change the mesh to depth mask.
 	/// </summary>
 	public GameObject m_hideMeshButton;
+
+	/// The canvas button that allows the SDN to be visualised.
+	/// </summary>
+	public GameObject m_viewNetworkButton;
+
+	/// <summary>
+	/// The canvas button that turns off the SDN to be visualised.
+	/// </summary>
+	public GameObject m_hideNetworkButton;
 
 	/// <summary>
 	/// The canvas button that starts recording audio.
@@ -152,6 +168,8 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 
 	public GameObject m_freezeNetwork;
 	public GameObject m_unfreezeNetwork;
+	public GameObject m_clearDelayButton;
+
 
 	/// <summary>
 	/// The button to create new mesh with selected Area Description, available only if an Area Description is selected.
@@ -173,8 +191,10 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 	/// </summary>
 	public Button m_startGameButton;
 
-
-	public InputField m_tangoResolutionInput;
+	public InputField m_numPathInput;
+	public InputField m_wallAbsInput;
+	public InputField m_specCoeffInput;
+	public InputField m_nodeLossInput;
 
 	/// <summary>
 	/// The reference to the depth mask material to be applied to the mesh.
@@ -247,12 +267,16 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 
 	private SDN scatteringNetwork;
 
+	private SDNDraw scatteringNetworkDraw;
+
 	/// <summary>
 	/// Start is called on the frame when a script is enabled just before any of the Update methods is called the first time.
 	/// </summary>
 	public void Start ()
 	{
 		scatteringNetwork = m_markerObject.GetComponent<SDN> ();
+		scatteringNetworkDraw = m_markerObject.GetComponent<SDNDraw> ();
+
 		m_meshSavePath = Application.persistentDataPath + "/meshes";
 		Directory.CreateDirectory (m_meshSavePath);
 
@@ -292,9 +316,6 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 			}
 		}
 	}
-
-
-
 
 	/// <summary>
 	/// Application onPause / onResume callback.
@@ -515,9 +536,11 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 		// Place marker object at target point hit by raycast.
 		RaycastHit hit;
 		if (Physics.Raycast (Camera.main.ScreenPointToRay (pdata.position), out hit, Mathf.Infinity)) {
-			m_markerObject.SetActive (true);
-			m_markerObject.transform.position = hit.point;
-			m_markerObject.transform.up = hit.normal;
+			if (hit.collider.name != "boundary") {
+				m_markerObject.SetActive (true);
+				m_markerObject.transform.position = hit.point;
+				m_markerObject.transform.up = hit.normal;
+			}
 		}
 	}
 		
@@ -531,6 +554,8 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 
 		foreach (MeshRenderer mr in m_meshFromFile.GetComponentsInChildren<MeshRenderer>()) {
 			mr.material = m_visibleMat;
+			m_boundaryObject.setBoundaryMaterial (m_visibleMat);
+
 		}
 
 		m_viewMeshButton.SetActive (false);
@@ -546,6 +571,7 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
     
 		foreach (MeshRenderer mr in  m_meshFromFile.GetComponentsInChildren<MeshRenderer>()) {
 			mr.material = m_depthMaskMat;
+			m_boundaryObject.setBoundaryMaterial (m_depthMaskMat);
 		}
 
 
@@ -553,6 +579,26 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 		m_hideMeshButton.SetActive (false);
 	}
 		
+	public void Button_showNetwork() {
+		
+		m_hideNetworkButton.SetActive (true);
+		m_viewNetworkButton.SetActive (false);
+	
+		scatteringNetworkDraw.setDraw(true);
+	
+	}
+
+	public void Button_hideNetwork() {
+
+		m_viewNetworkButton.SetActive (true);
+		m_hideNetworkButton.SetActive (false);
+
+		scatteringNetworkDraw.setDraw(false);
+
+	}
+
+
+
 	/// <summary>
 	/// Exit the game and return to mesh selection.
 	/// </summary>
@@ -750,6 +796,30 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 		}
 	}
 
+	public void Button_enableER() {
+		m_enableERButton.SetActive (true);
+		m_enableAllAudioButton.SetActive (false);
+		m_disableAllButton.SetActive (false);
+
+		scatteringNetwork.enableER ();
+
+	}
+
+	public void Button_enableAll() {
+		m_enableERButton.SetActive (false);
+		m_enableAllAudioButton.SetActive (true);
+		m_disableAllButton.SetActive (false);
+		scatteringNetwork.enableAll ();
+
+	}
+
+	public void Button_DisableAll() {
+		m_enableERButton.SetActive (false);
+		m_enableAllAudioButton.SetActive (false);
+		m_disableAllButton.SetActive (true);
+		scatteringNetwork.disableAll ();
+	}
+
 	public void Button_StartRecord (){
 		m_stopRecordButton.SetActive (true);
 		m_startRecordButton.SetActive (false);
@@ -788,19 +858,39 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 	public void Button_FreezeNetwork() {
 		m_unfreezeNetwork.SetActive (true);
 		m_freezeNetwork.SetActive (false);
-		scatteringNetwork.freezeNetwork = true;
+		scatteringNetwork.setUpdateNetwork (false);
 
+	}
 
+	public void Button_ClearDelays() {
+		scatteringNetwork.clearAllDelays ();
 	}
 
 	public void Button_UnFreezeNetwork() {
 		m_freezeNetwork.SetActive (true);
 		m_unfreezeNetwork.SetActive (false);
-		scatteringNetwork.freezeNetwork = false;
-
-
+		scatteringNetwork.setUpdateNetwork (true);
 	}
 
+	public void Input_updateTargetNumRef() {
+		int val = int.Parse (m_numPathInput.text);
+		scatteringNetwork.setNumRef (val);
+	}
+
+	public void Input_updateWallAbs() {
+		float val = float.Parse (m_wallAbsInput.text);
+		scatteringNetwork.setNodeWallAbs (val);
+	}
+
+	public void Input_updateNodeLoss() {
+		float val = float.Parse (m_nodeLossInput.text);
+		scatteringNetwork.setNodeLoss (val);
+	}
+
+	public void Input_updateSpecularity() {
+		float val = float.Parse (m_specCoeffInput.text);
+		scatteringNetwork.setNodeSpecularity (val);
+	}
 
 	public void toggleSettings (){
 		
@@ -1009,6 +1099,7 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 				if (m_meshFromFile.name == "Imported OBJ file") {
 					m_meshFromFile.name = "AreaDescriptonMesh";
 				}
+
 				startAfterLoad ();
 			} else {
 				AndroidHelper.ShowAndroidToastMessage ("Failed to load mesh");
@@ -1026,6 +1117,14 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 		result(www.text);
 	}
 
+	public Bounds GetMaxBounds(GameObject g) {
+		Bounds b = new Bounds (g.transform.position, Vector3.zero);
+		foreach(MeshRenderer r in g.GetComponentsInChildren<Renderer>()) {
+			b.Encapsulate (r.bounds);
+			}
+		return b;
+	}
+
 	private void startAfterLoad() {
 
 		for (int i = 0; i < m_meshFromFile.transform.childCount; i++) {
@@ -1037,6 +1136,17 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 		}
 
 		m_meshFromFile.transform.Rotate (new Vector3 (0, 180, 0));
+
+		foreach (MeshFilter mf in m_meshFromFile.GetComponentsInChildren<MeshFilter>()) {
+			mf.mesh.RecalculateNormals ();
+		}
+
+		m_boundaryObject.initialise ();
+		m_boundaryObject.setBoundaryBounds (GetMaxBounds (m_meshFromFile));
+		m_boundaryObject.setBoundaryLayer ("Occlusion");
+		m_boundaryObject.setBoundaryMaterial (m_depthMaskMat);
+		m_boundaryObject.transform.SetParent (m_meshFromFile.transform);
+
 
 		m_3dReconstruction = true;
 
