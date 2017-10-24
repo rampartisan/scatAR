@@ -1,0 +1,47 @@
+<?xml version="1.0"?>
+<doc>
+    <assembly>
+        <name>Parallel</name>
+    </assembly>
+    <members>
+        <member name="T:Parallel">
+            <summary>
+            In-house implementation of new .Net features unavailable in Mono
+            </summary>
+        </member>
+        <member name="M:Parallel.ForEach``1(System.Collections.Generic.IEnumerable{``0},System.Action{``0})">
+            <summary>
+            Executes a for each loop in which iterations may run in parallel.
+            </summary>
+            <param name="source">An enumerable data source.</param>
+            <param name="body">The delegate that is invoked once per iteration.</param>
+        </member>
+        <member name="M:Parallel.For(System.Int32,System.Int32,System.Action{System.Int32})">
+            <summary>
+            Executes a for loop in which iterations may run in parallel.
+            </summary>
+            <param name="fromInclusive">The start index, inclusive.</param>
+            <param name="toExclusive">The end index, exclusive.</param>
+            <param name="body">The delegate that is invoked once per iteration.</param>
+        </member>
+        <member name="M:Parallel.Invoke(System.Action[])">
+            <summary>
+            Executes each of the provided actions, possibly in parallel.
+            </summary>
+            <param name="actions">An array of Action to execute</param>
+        </member>
+        <member name="M:Parallel.AsyncInvoke(System.Action[])">
+            <summary>
+            Invoke without blocking calling thread
+            Invoke: Executes each of the provided actions, possibly in parallel.
+            </summary>
+            <param name="actions">An array of Action to execute</param>
+        </member>
+        <member name="M:Threading.ThreadGroup.Wait">
+            <summary>
+            Optional alternative if you want to pass in an object
+            </summary>
+            <param name="action"></param>
+        </member>
+    </members>
+</doc>

@@ -2,12 +2,9 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/Scripts/SDN.cs">
     <Files>
-      <File FileName="Assets/Scripts/SDN.cs" Line="276" Column="5" />
-      <File FileName="Assets/Scripts/SDNDraw.cs" Line="90" Column="66" />
-      <File FileName="Assets/DeviceConsole/Scripts/DeviceConsole.cs" Line="1" Column="1" />
-      <File FileName="Assets/TANGO/Script/MeshOcclusionUIController.cs" Line="843" Column="16" />
-      <File FileName="Assets/TANGO/TangoSDK/Core/Scripts/Listeners/DepthListener.cs" Line="398" Column="28" />
-      <File FileName="Assets/Scripts/reflectionFinder.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/reflectionFinder.cs" Line="196" Column="17" />
+      <File FileName="Assets/Scripts/reflectionPath.cs" Line="1" Column="1" />
+      <File FileName="Assets/Scripts/SDN.cs" Line="690" Column="28" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>
