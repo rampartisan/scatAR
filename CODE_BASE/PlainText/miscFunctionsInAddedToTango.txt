@@ -1,0 +1,533 @@
+\\ Within MeshOcclusionUICONTROLLER
+
+	public void beginObjectFinding() {
+		startObjectFinding  = true;
+		Button_placeRandomMarker ();
+		m_markerObject.SetActive (true);
+		Button_StartObjectfinding.gameObject.SetActive (false);
+		m_markerObject.GetComponent<GvrAudioSource> ().Play ();
+	}
+
+	public void Image_PlaceMarker (BaseEventData data)
+	{
+
+		if (enableTapToPlace) {
+
+			if (!startObjectFinding) {
+				startObjectFinding = true;
+				Button_StartObjectfinding.SetActive (false);
+			}
+
+			PointerEventData pdata = (PointerEventData)data;
+
+			// Place marker object at target point hit by raycast.
+			RaycastHit hit;
+			if (Physics.Raycast (Camera.main.ScreenPointToRay (pdata.position), out hit, Mathf.Infinity)) {
+				if (hit.collider.name != "boundary") {
+					m_markerObject.SetActive (true);
+					m_markerObject.transform.position = hit.point;
+					float y = m_markerObject.transform.position.y;
+					m_markerObject.transform.position = new Vector3 (m_markerObject.transform.position.x, y + 0.3f, m_markerObject.transform.position.z);
+				}
+			}
+		} else {
+			
+			if (!startObjectFinding) {
+				startObjectFinding = true;
+				Button_StartObjectfinding.SetActive (false);
+		}
+			Button_placeRandomMarker ();
+
+	}
+	}
+
+	public void Button_HideMesh ()
+	{    
+		foreach (MeshRenderer mr in  m_meshFromFile.GetComponentsInChildren<MeshRenderer>()) {
+			mr.material = m_depthMaskMat;
+			m_boundaryObject.setBoundaryMaterial (m_depthMaskMat);
+		}
+			
+		m_viewMeshButton.SetActive (true);
+		m_hideMeshButton.SetActive (false);
+	}
+		
+	public void Button_showNetwork() {
+		m_hideNetworkButton.SetActive (true);
+		m_viewNetworkButton.SetActive (false);
+		scatteringNetworkDraw.setDraw(true);
+	}
+
+	public void Button_hideNetwork() {
+
+		m_viewNetworkButton.SetActive (true);
+		m_hideNetworkButton.SetActive (false);
+		scatteringNetworkDraw.setDraw(false);
+	}
+
+	private string removeCharactersForFilePath (string input)
+	{
+		input = input.Replace (@"/", "");
+		input = input.Replace (":", "");
+		input = input.Replace (" ", "");
+		return input;
+	}
+
+	public void Button_placeRandomMarker() {
+
+		Vector3 point = Vector3.zero;
+		NavMeshTriangulation NMT = NavMesh.CalculateTriangulation ();
+
+		do{
+			int t = UnityEngine.Random.Range (0, NMT.indices.Length - 3);
+			point = Vector3.Lerp(NMT.vertices[NMT.indices[t]], NMT.vertices[NMT.indices[t+1]], UnityEngine.Random.value);
+			Vector3.Lerp(point, NMT.vertices[NMT.indices[t+2]], UnityEngine.Random.value);
+		} while(Vector3.Distance(point,audioRec.gameObject.transform.position) < 1.0f);
+			
+		m_markerObject.SetActive (true);
+		m_markerObject.transform.up = Vector3.up;
+		m_markerObject.transform.position = point;
+
+		if (!startObjectFinding) {
+			startObjectFinding = true;
+			Button_StartObjectfinding.SetActive (false);
+
+		}
+
+	}
+
+	public void Button_enableER() {
+		m_enableERButton.SetActive (true);
+		m_enableAllAudioButton.SetActive (false);
+		m_disableAllButton.SetActive (false);
+
+		scatteringNetwork.enableER ();
+
+	}
+
+	public void Button_enableAll() {
+		m_enableERButton.SetActive (false);
+		m_enableAllAudioButton.SetActive (true);
+		m_disableAllButton.SetActive (false);
+		scatteringNetwork.enableAll ();
+
+	}
+
+	public void Button_DisableAll() {
+		m_enableERButton.SetActive (false);
+		m_enableAllAudioButton.SetActive (false);
+		m_disableAllButton.SetActive (true);
+		scatteringNetwork.disableAll ();
+	}
+
+	public void Button_StartRecord (){
+		m_stopRecordButton.SetActive (true);
+		m_startRecordButton.SetActive (false);
+
+		if (!audioRec.recordAudio) {
+			audioRec.beginRecord ();
+		}
+	}
+
+	public void Button_EndRecord (){
+		
+		if (audioRec.recordAudio) {
+			audioRec.endRecord ();
+		}
+		m_startRecordButton.SetActive (true);
+		m_stopRecordButton.SetActive (false);
+	}
+
+	public void Button_ShowDebug (){
+		
+		m_hideDebug.SetActive (true);
+		m_showDebug.SetActive (false);
+		m_debugPanel.SetActive (true);
+		m_meshObject.m_enableDebugUI = true;
+	}
+
+	public void Button_HideDebug (){
+
+		m_showDebug.SetActive (true);
+		m_hideDebug.SetActive (false);
+		m_debugPanel.SetActive (false);
+		m_meshObject.m_enableDebugUI = false;
+	}
+
+	public void Button_FreezeNetwork() {
+		m_unfreezeNetwork.SetActive (true);
+		m_freezeNetwork.SetActive (false);
+		scatteringNetwork.setUpdateNetwork (false);
+
+	}
+
+	public void Toggle_enableTapToPlace() {
+		enableTapToPlace  = !enableTapToPlace;
+	}
+
+	public void Button_ClearDelays() {
+		scatteringNetwork.clearAllDelays ();
+	}
+
+	public void Button_UnFreezeNetwork() {
+		m_freezeNetwork.SetActive (true);
+		m_unfreezeNetwork.SetActive (false);
+		scatteringNetwork.setUpdateNetwork (true);
+	}
+
+	public void Input_updateTargetNumRef() {
+		int val = int.Parse (m_numPathInput.text);
+		scatteringNetwork.setNumRef (val);
+
+	}
+
+	public void Input_updateWallAbs() {
+		float val = float.Parse (m_wallAbsInput.text);
+		scatteringNetwork.setNodeWallAbs (val);
+	}
+
+	public void Input_updateNodeLoss() {
+		float val = float.Parse (m_nodeLossInput.text);
+		scatteringNetwork.setNodeLoss (val);
+	}
+
+	public void Input_updateSpecularity() {
+		float val = float.Parse (m_specCoeffInput.text);
+		scatteringNetwork.setNodeSpecularity (val);
+	}
+
+	public void toggleSettings (){
+		
+		settingsState = !settingsState;
+
+		if (settingsState) {
+			m_settingsPanel.SetActive (true);
+		} else {
+			m_settingsPanel.SetActive (false);
+		}
+	}
+		
+	private string waitAndGetUserInput(string placeholderText) {
+
+		TouchScreenKeyboard keyboard = TouchScreenKeyboard.Open (placeholderText, TouchScreenKeyboardType.Default);
+		while (!keyboard.done && !keyboard.wasCanceled) {
+
+		}
+		return(keyboard.text);
+	}
+
+	public void reloadLevel() {
+		#pragma warning disable 618
+		Application.LoadLevel (Application.loadedLevel);
+		#pragma warning restore 618
+	}
+
+	public void Button_DeleteSelectedAreaDescription() {
+
+		if (m_curAreaDescription != null) {
+
+			string name = m_curAreaDescription.GetMetadata ().m_name;
+			string uuid = m_curAreaDescription.m_uuid;
+			m_curAreaDescription.Delete ();
+			m_createSelectedButton.interactable = false;
+			m_deleteSelectedButton.interactable = false;
+			m_startGameButton.interactable = false;
+			m_exportSelectedButton.interactable = false;
+			_PopulateAreaDescriptionUIList ();
+			File.Delete(m_meshSavePath + "/" + uuid + ".obj");
+			AndroidHelper.ShowAndroidToastMessage ("Deleted Area Descripton " + name);
+			m_curAreaDescription = null;
+			m_savedUUID = null;
+		}
+	}
+
+
+	private IEnumerator _DoSaveMeshOverFrames() {
+
+		int startNoUpdates = m_tangoDynamicMesh.NumQueuedMeshUpdates;
+
+		while (m_tangoDynamicMesh.NumQueuedMeshUpdates != 0) {
+			float percentage = Mathf.Abs (((m_tangoDynamicMesh.NumQueuedMeshUpdates / startNoUpdates) / startNoUpdates) * 100.0f);
+			m_savingText.text = "Finalising Mesh ... " + percentage.ToString() + "%";
+			yield return null;
+		}
+			
+		StringBuilder sb = new StringBuilder();
+		int startVertex = 0;
+		int numMesh = m_tangoDynamicMesh.m_meshes.Values.Count;
+		int count = 1;
+
+		foreach (TangoDynamicMesh.TangoSingleDynamicMesh tmesh in m_tangoDynamicMesh.m_meshes.Values) {
+
+			m_savingText.text = "Saving Submeshes ... " + count.ToString() + " / " + numMesh.ToString();
+
+			Mesh mesh = tmesh.m_mesh;
+			int meshVertices = 0;
+			sb.Append(string.Format("g {0}\n", tmesh.name));
+
+			// Vertices.
+			for (int i = 0; i < mesh.vertices.Length; i++)
+			{
+				meshVertices++;
+				Vector3 v = tmesh.transform.TransformPoint(mesh.vertices[i]);
+
+				// Include vertex colors as part of vertex point for applications that support it.
+				if (mesh.colors32.Length > 0)
+				{
+					float r = mesh.colors32[i].r / 255.0f;
+					float g = mesh.colors32[i].g / 255.0f;
+					float b = mesh.colors32[i].b / 255.0f;
+					sb.Append(string.Format("v {0} {1} {2} {3} {4} {5} 1.0\n", v.x, v.y, -v.z, r, g, b));
+				}
+				else
+				{
+					sb.Append(string.Format("v {0} {1} {2} 1.0\n", v.x, v.y, -v.z));
+				}
+			}
+				
+			sb.Append("\n");
+
+			// Normals.
+			if (mesh.normals.Length > 0)
+			{
+				foreach (Vector3 n in mesh.normals)
+				{
+					sb.Append(string.Format("vn {0} {1} {2}\n", n.x, n.y, -n.z));
+				}
+
+				sb.Append("\n");
+			}
+
+			// Texture coordinates.
+			if (mesh.uv.Length > 0)
+			{
+				foreach (Vector3 uv in mesh.uv)
+				{
+					sb.Append(string.Format("vt {0} {1}\n", uv.x, uv.y));
+				}
+
+				sb.Append("\n");
+			}
+
+			// Faces.
+			int[] triangles = mesh.triangles;
+			for (int j = 0; j < triangles.Length; j += 3)
+			{
+				sb.Append(string.Format("f {0}/{0}/{0} {1}/{1}/{1} {2}/{2}/{2}\n", triangles[j + 2] + 1 + startVertex, triangles[j + 1] + 1 + startVertex, triangles[j] + 1 + startVertex));
+			}
+
+			sb.Append("\n");
+			startVertex += meshVertices;
+			count++;
+			m_tangoApplication._ResetSleepTimeout ();
+			yield return null;
+		}
+
+		m_savingText.text = "Saving Mesh To File ... ";
+		using (StreamWriter sw = new StreamWriter (m_meshSavePath + "/" + "tempMesh.obj")) {
+			sw.AutoFlush = true;
+			sw.Write (sb.ToString ());
+			sw.Close ();
+		}
+	
+		yield return null;
+		StartCoroutine(_DoSaveAreaDescriptionAndReload());
+		yield return null;
+	}
+
+	private IEnumerator _DoSaveAreaDescriptionAndReload ()
+	{
+		if (m_saveThread != null) {
+			yield break;
+		}
+			
+		// Disable interaction before saving.
+		m_initialized = false;
+
+		if (string.IsNullOrEmpty (m_savedUUID)) {
+			m_savingText.text = "Saving Area Description ... ";
+
+			m_saveThread = new Thread (delegate() {
+				m_curAreaDescription = AreaDescription.SaveCurrent ();
+
+				AreaDescription.Metadata metadata = m_curAreaDescription.GetMetadata ();
+				string placeHolderText = "Enter A Meaningful Name For This Area";
+				string userInput = waitAndGetUserInput(placeHolderText);
+
+				if(userInput == placeHolderText) {
+					userInput = DateTime.Now.ToString();
+				}
+				metadata.m_name = userInput;
+				metadata.m_dateTime = DateTime.Now;
+				m_savedUUID = m_curAreaDescription.m_uuid;    
+				m_curAreaDescription.SaveMetadata (metadata);
+
+				if(File.Exists(m_meshSavePath + "/" + "tempMesh.obj")) {
+					File.Move(m_meshSavePath + "/" + "tempMesh.obj",m_meshSavePath + "/" + m_savedUUID + ".obj");
+					}
+
+				reloadLevel();
+			
+			});
+			m_saveThread.Start ();
+
+		} else {
+			reloadLevel ();
+		}
+	}
+		
+	private bool loadOBJToUnity() {		
+		string path = "file://" + m_meshSavePath + "/" + m_savedUUID + ".obj"; 
+		Vector3 scale = new Vector3 (1, 1, 1);
+		Vector3 translate = Vector3.zero;
+		Quaternion rotate = Quaternion.identity;
+		bool goPerGroup = true;
+		bool subMeshPerGroup = false;
+		bool usesRightHanded = true;
+
+		StartCoroutine(DownloadAndImportFile(path, rotate, scale, translate, goPerGroup, subMeshPerGroup, usesRightHanded));
+		return true;
+
+	}
+
+	private IEnumerator DownloadAndImportFile(string url, Quaternion rotate, Vector3 scale, Vector3 translate, bool gameObjectPerGrp, bool subMeshPerGrp, bool usesRightHanded) {
+		string objString = null;
+
+		print ("begin Mesh Load");
+
+		yield return StartCoroutine(DownloadFile(url, retval => objString = retval));
+
+
+		print ("Mesh too large, load in background");
+
+
+		if(objString!=null && objString.Length>0) {
+
+			yield return StartCoroutine(ObjImporter.ImportInBackground(objString, null, null, rotate, scale, translate, retval => m_meshFromFile = retval, gameObjectPerGrp, subMeshPerGrp, usesRightHanded));
+
+			if (m_meshFromFile != null) {
+
+				// rename the object if needed
+				if (m_meshFromFile.name == "Imported OBJ file") {
+					m_meshFromFile.name = "AreaDescriptonMesh";
+				}
+
+				startAfterLoad ();
+			} else {
+				AndroidHelper.ShowAndroidToastMessage ("Failed to load mesh");
+				reloadLevel ();
+			}
+		}
+
+		print ("Mesh loading finished");
+
+	}
+
+	private IEnumerator DownloadFile(string url, System.Action<string> result) {
+		WWW www = new WWW(url);
+		yield return www;
+		if(www.error!=null) {
+		} else {
+		}
+		result(www.text);
+	}
+
+	public Bounds GetMaxBounds(GameObject g) {
+		Bounds b = new Bounds (g.transform.position, Vector3.zero);
+		foreach(MeshRenderer r in g.GetComponentsInChildren<Renderer>()) {
+			b.Encapsulate (r.bounds);
+			}
+		return b;
+	}
+
+	private void startAfterLoad() {
+
+		for (int i = 0; i < m_meshFromFile.transform.childCount; i++) {
+			GameObject child = m_meshFromFile.transform.GetChild (i).gameObject;
+			child.GetComponent<MeshFilter> ().mesh.RecalculateNormals ();
+			child.layer = LayerMask.NameToLayer("Occlusion");
+			child.GetComponent<MeshRenderer> ().material = m_depthMaskMat;
+			child.AddComponent<MeshCollider> ();
+		}
+
+		m_meshFromFile.transform.Rotate (new Vector3 (0, 180, 0));
+
+		foreach (MeshFilter mf in m_meshFromFile.GetComponentsInChildren<MeshFilter>()) {
+			mf.mesh.RecalculateNormals ();
+			mf.mesh.RecalculateBounds ();
+			mf.mesh.RecalculateNormals ();
+		}
+
+		m_boundaryObject.initialise ();
+		m_boundaryObject.setBoundaryBounds (GetMaxBounds (m_meshFromFile));
+		m_boundaryObject.setBoundaryLayer ("Occlusion");
+		m_boundaryObject.setBoundaryMaterial (m_depthMaskMat);
+		m_boundaryObject.transform.SetParent (m_meshFromFile.transform);
+
+		navMeshBuilder.transform.position = m_meshFromFile.transform.position;
+		navMeshBuilder.m_Size = (m_boundaryObject.getBounds ().size * 1.2f);
+
+		foreach (MeshFilter mf in m_meshFromFile.GetComponentsInChildren<MeshFilter>()) {
+			mf.gameObject.AddComponent<NavMeshSourceTag> ();
+		}
+
+		navMeshBuilder.UpdateNavMesh (false);
+
+		NavMeshTriangulation NMT = NavMesh.CalculateTriangulation ();
+		Vector3 point = Vector3.zero;
+
+		do{
+			int t = UnityEngine.Random.Range (0, NMT.indices.Length - 3);
+			point = Vector3.Lerp(NMT.vertices[NMT.indices[t]], NMT.vertices[NMT.indices[t+1]], UnityEngine.Random.value);
+			Vector3.Lerp(point, NMT.vertices[NMT.indices[t+2]], UnityEngine.Random.value);
+		} while(Vector3.Distance(point,audioRec.gameObject.transform.position) < 1.0f);
+
+		m_markerObject.SetActive (true);
+		m_markerObject.transform.up = Vector3.up;
+		m_markerObject.transform.position = point;	
+		m_3dReconstruction = true;
+
+		// Enable objects needed to use Area Description and mesh for occlusion.
+		m_arPoseController.gameObject.SetActive (true);
+		m_arPoseController.m_useAreaDescriptionPose = true;
+
+		// Disable unused components in tango application.
+		m_tangoApplication.m_areaDescriptionLearningMode = false;
+		m_tangoApplication.m_enableDepth = false;
+
+		// Load Area Description file.
+		m_curAreaDescription = AreaDescription.ForUUID (m_savedUUID);
+
+		m_savingPanel.SetActive (false);
+		m_meshInteractionPanel.SetActive (true);
+		m_textInstructions.SetActive (enableTapToPlace);
+		m_relocalizeImage.gameObject.SetActive (true);
+
+		m_tangoApplication.Startup (m_curAreaDescription);
+
+	}
+		
+	private IEnumerator copyMesh() {
+		string path = "/sdcard/scatAR/Meshes/";
+
+		TouchScreenKeyboard keyboard = TouchScreenKeyboard.Open (path, TouchScreenKeyboardType.Default);
+
+		while (!keyboard.done && !keyboard.wasCanceled) {
+			yield return null;
+		}
+
+		File.Copy(m_meshSavePath + "/" + m_savedUUID+ ".obj", path + m_curAreaDescription.GetMetadata().m_name + ".obj"); 
+		AndroidHelper.ShowAndroidToastMessage("Exported " + m_curAreaDescription.GetMetadata().m_name + " to" + path);
+	}
+
+	public void Button_CopyMesh() {
+
+		if (File.Exists (m_meshSavePath + "/" + m_savedUUID + ".obj")) {
+			StartCoroutine (copyMesh());
+		} else {
+			AndroidHelper.ShowAndroidToastMessage ("Failed to Export, Mesh File Does not Exist");
+		}
+
+	}
+
+}
