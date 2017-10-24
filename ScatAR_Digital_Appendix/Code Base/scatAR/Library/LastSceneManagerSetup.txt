@@ -1,4 +1,0 @@
-sceneSetups:
-- path: Assets/Scenes/scatAR.unity
-  isLoaded: 1
-  isActive: 1
