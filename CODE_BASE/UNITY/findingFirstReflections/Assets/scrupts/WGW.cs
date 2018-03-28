@@ -594,7 +594,7 @@ public class WGW : MonoBehaviour
 			return nodePath.lengths [0];
 		}
 
-
+		//commit testing
 		public void doScattering (bool outputLateReflections)
 		{
 			FOSample = incoming.read ();
