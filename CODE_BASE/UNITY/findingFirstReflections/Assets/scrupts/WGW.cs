@@ -354,6 +354,17 @@ public class WGW : MonoBehaviour
 		}
 
 		for (int i = 0; i < network.Count; i++) {
+			for (int j = 0; j < network.Count; j++) {
+				for (int k = 1; k < network.Count; k++) {      
+					int idx = (j + k) % network.Count;
+					if (j != i && idx != i && idx != j && j < idx) {
+						network [i].addSecondConnection (network [j], network [idx]);
+					}
+				}
+			}
+		}
+
+		for (int i = 0; i < network.Count; i++) {
 			WGWnode n = network [i];
 			n.findReverseConnections ();
 			n.updateConnectionDelay ();
@@ -507,6 +518,7 @@ public class WGW : MonoBehaviour
 
 		private Vector3 position;
 		private List<WGWconnection> connections;
+		private List<WGWconnection> secondConnections;
 		private reflectionPath nodePath;
 
 		private delayLine incoming;
@@ -531,6 +543,7 @@ public class WGW : MonoBehaviour
 
 
 		private int numConnections = 0;
+		private int numSecondConnections = 0;
 
 		public WGWnode (reflectionPath thePath)
 		{
@@ -601,8 +614,8 @@ public class WGW : MonoBehaviour
 			FOSample *= incomingAttFactor;
 			FOSample = wallFilter.Transform (FOSample);
 			FOSample *= wallAbsCoeff;
-			outgoingSample = FOSample;
 			HalfFOSample = 0.5f * FOSample;
+			outgoingSample = FOSample;
 
 			int i ,j;
 
@@ -610,8 +623,7 @@ public class WGW : MonoBehaviour
 				connections [i].posSamp = connections [i].getSampleFromReverseConnection ();
 
 				SOsamples [i] = connections [i].getSampleFromReverseConnection ();
-				interNodeAttFactor = 1.0f / (1.0f + (nodePath.lengths [1] + connections[i].getLength()) / connections[i].getTargetDistanceToSource());
-				attenuationMultiplier = 2.0f / (numConnections - 1);
+
 			}
 
 			for (i = 0; i < numConnections; i++) {
@@ -651,6 +663,10 @@ public class WGW : MonoBehaviour
 
 			scatteringFactor = (2.0f / minCon) - nodeLoss;
 			scatteringFactorDiag = ((2.0f - minCon) / minCon) - -nodeLoss;
+
+			//update 
+			interNodeAttFactor = 1.0f / (1.0f + (nodePath.lengths [1] + connections[i].getLength()) / connections[i].getTargetDistanceToSource());
+			attenuationMultiplier = 2.0f / (numConnections - 1);
 		}
 
 		public void updateConnectionDelay ()
@@ -680,11 +696,26 @@ public class WGW : MonoBehaviour
 			SOsamples.Add(zero);
 		}
 
+		public void addSecondConnection (WGWnode m, WGWnode n)
+		{
+			secondConnections.Add (new WGWconnection (m, n));
+			updateScatteringFactor ();
+			numSecondConnections = secondConnections.Count;
+		}
+
 		public void findReverseConnections ()
 		{
 			for (int i = 0; i < connections.Count; i++) {
 				WGWconnection theTarget = connections [i].getTarget ().connections.Find (item => item.getTarget () == this);
 				connections [i].setReverseConnection (ref theTarget);
+			}
+		}
+
+		public void findSecondReverseConnections ()
+		{
+			for (int i = 0; i < secondConnections.Count; i++) {
+				WGWconnection theTarget = secondConnections [i].getTarget ().secondConnections.Find (item => item.getTarget () == this);
+				secondConnections [i].setReverseConnection (ref theTarget);
 			}
 		}
 
@@ -709,6 +740,16 @@ public class WGW : MonoBehaviour
 			}
 			return false;
 		}
+
+//		public bool containsSecondConnection (WGWnode n)
+//		{
+//			for (int i = 0; i < secondConnections.Count; i++) {
+//				if (secondConnections [i].getTarget ().Equals (n)) {
+//					return true;
+//				}
+//			}
+//			return false;
+//		}
 
 		public Vector3 getPosition ()
 		{
