@@ -76,7 +76,7 @@ public class SDN : MonoBehaviour
 		RF = gameObject.AddComponent<reflectionFinder> ();
 		RF.setListener (listener);
 
-		boundary.setBoundaryBounds (GetMaxBounds (geoForNetwork));	
+		boundary.setBoundaryBounds (GetMaxBounds (geoForNetwork));
 		RF.setboundary (boundary);
 
 		RF.setNumInitalDirections (targetNumReflections);
@@ -92,9 +92,9 @@ public class SDN : MonoBehaviour
 		audioProcessThread = new Thread (audioProcess);
 		audioProcessThread.Start ();
 		scriptInit = true;
-	}	
-		
-		
+	}
+
+
 	void Update ()
 	{
 		RF.doUpdate = update;
@@ -124,7 +124,7 @@ public class SDN : MonoBehaviour
 	}
 
 	public void propagateNetwork() {
-		
+
 		sampleMX.WaitOne ();
 		networkMX.WaitOne ();
 		int numSampsToConsume = inSamples.Count;
@@ -153,7 +153,7 @@ public class SDN : MonoBehaviour
 				network [j].doScattering (doLateReflections);
 			}
 
-	
+
 			outVal += directVal;
 			outSamples.Enqueue (outVal);
 		}
@@ -249,11 +249,11 @@ public class SDN : MonoBehaviour
 	}
 
 	void OnAudioFilterRead (float[] data, int channels)
-	{			
+	{
 		numSamps = data.Length / channels;
 		chanScale = 1.0f / channels;
 		int i, c;
-
+		
 		if (scriptInit) {
 
 			sampleMX.WaitOne ();
@@ -265,7 +265,7 @@ public class SDN : MonoBehaviour
 				}
 				inSamples.Enqueue (AFin * chanScale);
 			}
-	
+
 			if (!(outSamples.Count < numSamps)) {
 				if (!enableListen) {
 					for ( i = 0; i < numSamps; i++) {
@@ -358,7 +358,7 @@ public class SDN : MonoBehaviour
 			n.findReverseConnections ();
 			n.updateConnectionDelay ();
 		}
-						
+
 	}
 
 	public class delayLine
@@ -461,7 +461,7 @@ public class SDN : MonoBehaviour
 
 		public float read ()
 		{
-			
+
 			if (newInterpWaiting && !doInterp) {
 				doInterp = true;
 				newInterpWaiting = false;
@@ -491,7 +491,7 @@ public class SDN : MonoBehaviour
 			readPtr %= capacity;
 			return outSamp;
 		}
-			
+
 		public static int distanceToDelayTime (float distance)
 		{
 			return Mathf.CeilToInt ((distance * sampleRate) /airSpeed);
@@ -575,7 +575,7 @@ public class SDN : MonoBehaviour
 
 		public float getOutgoing ()
 		{
-			return outgoing.read (); 
+			return outgoing.read ();
 		}
 
 
@@ -606,7 +606,7 @@ public class SDN : MonoBehaviour
 						connections [i].negSamp += connections [j].posSamp * scatteringFactor;
 					}
 				}
-					
+
 //				connections [i].negSamp = connections [i].connectFilter.Transform (connections [i].negSamp);
 				connections [i].negSamp -= connections [i].prevSample;
 				connections [i].inputToDelay (connections [i].negSamp);
@@ -627,7 +627,7 @@ public class SDN : MonoBehaviour
 		public void updateScatteringFactor ()
 		{
 			int minCon = connections.Count + 1;
-		
+
 			scatteringFactor = (2.0f / minCon) - nodeLoss;
 			scatteringFactorDiag = ((2.0f - minCon) / minCon) - -nodeLoss;
 		}
@@ -760,7 +760,7 @@ public class SDN : MonoBehaviour
 		{
 			if (reverseConnection != null) {
 				return reverseConnection.readFromDelay ();
-			} else {					
+			} else {
 				return 0.0f;
 			}
 		}
@@ -792,5 +792,3 @@ public class SDN : MonoBehaviour
 		}
 	}
 }
-
-

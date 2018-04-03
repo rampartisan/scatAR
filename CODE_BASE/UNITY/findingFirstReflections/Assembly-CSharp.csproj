@@ -166,9 +166,9 @@
      <Compile Include="Assets\scrupts\reflectionFinder.cs" />
      <Compile Include="Assets\scrupts\reflectionPath.cs" />
      <Compile Include="Assets\scrupts\SDN.cs" />
-     <Compile Include="Assets\scrupts\SDN1.cs" />
      <Compile Include="Assets\scrupts\SDNDraw.cs" />
      <Compile Include="Assets\scrupts\WGW.cs" />
+     <Compile Include="Assets\scrupts\WGWDraw.cs" />
      <Compile Include="Assets\wander.cs" />
      <None Include="Assets\_MK\MKGlow\Shader\Variants\Illumin\MK_Illumin-Glossy.shader" />
      <None Include="Assets\_MK\MKGlow\Shader\Variants\Cutout\MK_Cutout-Glossy.shader" />
