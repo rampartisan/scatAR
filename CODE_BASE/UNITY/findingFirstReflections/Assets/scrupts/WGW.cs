@@ -644,13 +644,13 @@ public class WGW : MonoBehaviour
 				}
 
 				SOsamples [i] = connections [i].getSampleFromReverseConnection ();
-				SOsamples [i] = wallFilter.Transform(SOsamples[i]);
+				//SOsamples [i] = wallFilter.Transform(SOsamples[i]);
 				SOsum += SOsamples [i] * interNodeAttFactor[i];
 
 			}
 
 			for (i = 0; i < numConnections; i++) {
-				connections [i].FOnegSamp += HalfFOSample;//initialSOsample;// + posSums[i]; //put filter
+				connections [i].FOnegSamp += initialSOsample + posSums[i]; //put filter
 			}
 				
 			for (i = 0; i < numConnections; i++) {
