@@ -124,10 +124,10 @@ public class SDN : MonoBehaviour
 	}
 
 	public void propagateNetwork() {
-
 		sampleMX.WaitOne ();
 		networkMX.WaitOne ();
 		int numSampsToConsume = inSamples.Count;
+
 		// horrible hack to solve latency @ startup - the queue quickly fills up from
 		// the audio thread before the main thread can catch up. I am a bad person for doing this.
 		if (inSamples.Count > 10000) {
@@ -140,12 +140,12 @@ public class SDN : MonoBehaviour
 
 		for ( i = 0; i < numSampsToConsume; i++) {
 			outVal = 0.0f;
-			inVal = inSamples.Dequeue () * networkInScale;
+			inVal = inSamples.Dequeue ();
 
 			directDelay.write (inVal);
 			directVal = directDelay.read ();
 			directVal *= directAtt;
-
+			//inVal *= networkInScale;
 
 			for (j = 0; j < network.Count; j++) {
 				outVal += network [j].getOutgoing ();
@@ -265,6 +265,7 @@ public class SDN : MonoBehaviour
 				}
 				inSamples.Enqueue (AFin * chanScale);
 			}
+
 
 			if (!(outSamples.Count < numSamps)) {
 				if (!enableListen) {
@@ -513,6 +514,11 @@ public class SDN : MonoBehaviour
 		private delayLine outgoing;
 
 		private BiQuadFilter wallFilter;
+		private BiQuadFilter wallFilter1;
+		private BiQuadFilter wallFilter2;
+		private BiQuadFilter wallFilter3;
+		private BiQuadFilter wallFilter4;
+		private BiQuadFilter wallFilter5;
 
 		private float scatteringFactor;
 		private float scatteringFactorDiag;
@@ -528,6 +534,12 @@ public class SDN : MonoBehaviour
 		public SDNnode (reflectionPath thePath)
 		{
 			wallFilter = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
+			wallFilter1 = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
+			wallFilter2 = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
+			wallFilter3 = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
+			wallFilter4 = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
+			wallFilter5 = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
+			//wallFilter = BiQuadFilter.flatResponse (delayLine.sampleRate);
 			connections = new List<SDNConnection> ();
 			nodePath = thePath;
 			position = nodePath.segments [1].origin;
@@ -593,6 +605,8 @@ public class SDN : MonoBehaviour
 			for (i = 0; i < numConnections; i++) {
 				connections [i].posSamp = connections [i].getSampleFromReverseConnection ();
 			}
+
+
 			for (i = 0; i < numConnections; i++) {
 
 				outgoingSample += connections [i].posSamp;
@@ -607,7 +621,7 @@ public class SDN : MonoBehaviour
 					}
 				}
 
-//				connections [i].negSamp = connections [i].connectFilter.Transform (connections [i].negSamp);
+				//connections [i].negSamp = connections [i].connectFilter.Transform (connections [i].negSamp);
 				connections [i].negSamp -= connections [i].prevSample;
 				connections [i].inputToDelay (connections [i].negSamp);
 				connections [i].prevSample = connections [i].negSamp;
@@ -723,6 +737,7 @@ public class SDN : MonoBehaviour
 		public SDNConnection (SDNnode theParent, SDNnode theTarget)
 		{
 			connectFilter = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
+			//connectFilter = BiQuadFilter.flatResponse (delayLine.sampleRate);
 
 			parent = theParent;
 			target = theTarget;

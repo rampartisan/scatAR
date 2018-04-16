@@ -16,6 +16,7 @@ public class randomFX : MonoBehaviour {
 
 	private bool playingClip = false;
 
+	float thisss = 0.0f;
 	// Use this for initialization
 	void Start () {
 		numClip = fxClips.Length;
@@ -49,10 +50,13 @@ public class randomFX : MonoBehaviour {
 				if (playingClip) {
 
 			int numSampsToConsume = Mathf.Min (numSamps, currClipLength - currClipPtr);
-
+			Debug.Log (numSampsToConsume);
 			for (int i = 0; i < numSampsToConsume; i++) {
 				for (int c = 0; c < channels; c++) {
 					data [(i * channels) + c] += samples [currClipIdx] [currClipPtr] * volScale;
+					thisss = data [(i * channels) + c];
+					if(thisss > 0.5f)
+						Debug.Log(thisss);
 				}
 				currClipPtr++;
 			}

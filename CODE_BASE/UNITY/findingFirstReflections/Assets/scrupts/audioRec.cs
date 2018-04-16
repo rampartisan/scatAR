@@ -92,7 +92,6 @@ public class audioRec : MonoBehaviour {
 		if (!fileName.ToLower().EndsWith(".wav")) {
 			fileName += ".wav";
 		}
-	
 
 		var filepath = fileName;
 		Directory.CreateDirectory(Path.GetDirectoryName(filepath));

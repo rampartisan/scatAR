@@ -11,7 +11,7 @@ public class randomWalk : MonoBehaviour
 
 	private NavMeshAgent m_agent;
 
-	public GvrAudioSource motors;
+	public AudioSource motors;
 	NavMeshTriangulation nmd;
 	Vector3 point;
 	void Start()

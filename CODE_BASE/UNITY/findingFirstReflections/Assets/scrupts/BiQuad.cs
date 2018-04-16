@@ -77,6 +77,36 @@ using UnityEngine;
 
 		}
 
+	public static BiQuadFilter flatResponse(float sampleRate)
+	{	
+		var filter = new BiQuadFilter();
+
+		 //flat
+		filter.a0 = 1.0f;
+		filter.a1 = 0.0f;
+		filter.a2 = 0.0f;
+		filter.a3 = 0.0f;
+		filter.a4 = 0.0f;
+
+
+		/* //all pass low
+		filter.a0 = 0.8312577411588764;
+		filter.a1 = 1.6625154823177528;
+		filter.a2 = 0.8312577411588764;
+		filter.a3 = 1.6265486900568018;
+		filter.a4 = 0.6984822745787039;
+		*/
+		/*
+		//all pass high
+		filter.a0 = 0.9931291961734309/2;
+		filter.a1 = -1.9862583923468617/2;
+		filter.a2 = 0.9931291961734309/2;
+		filter.a3 = -1.98625436036202/2;
+		filter.a4 = 0.9862624243317035/2;
+		*/
+		return filter;
+	}
+
 		/// <summary>
 		/// Set this up as a low pass filter
 		/// </summary>
@@ -163,19 +193,54 @@ using UnityEngine;
 			return filter;
 		}
 
+	public void SetWGWFilter(float sampleRate)
+	{
+		var b0 = 0.003;
+		var b1 = -0.0001;
+		var b2 = 0.2384;
+		var aa0 = -0.2384;
+		var aa1 = 0.9852;
+		var aa2 = 0.9928;
+		SetCoefficients(aa0, aa1, aa2, b0, b1, b2);
+	}
+
+	public static BiQuadFilter wgwFilter(float sampleRate)
+	{
+		var filter = new BiQuadFilter();
+		filter.SetWGWFilter(sampleRate);
+		return filter;
+	}
+
 
 	public static BiQuadFilter highPassAirFilter(float sampleRate) {
-		var filter = new BiQuadFilter();
+		var filter = new BiQuadFilter ();
 
+		//10k hz
+		/*
 		filter.a0 =  0.2513790015131591; 
 		filter.a1 =  0.5027580030263182; 
 		filter.a2 =  0.2513790015131591; 
 		filter.a3 =  -0.17124071441396285; 
 		filter.a4 =   0.1767567204665992; 
+		*/
+
+		//6500 hz
+		/*
+		filter.a0 = 0.13446612784552558;
+		filter.a1 = 0.26893225569105117;	
+		filter.a2 = 0.13446612784552558;	
+		filter.a3 = -0.7835403017700433;	
+		filter.a4 = 0.3214048131521458;
+*/
+		//500 hz
+		filter.a0 = 0.0014979066989295145;
+		filter.a1 = 0.002995813397859029;
+		filter.a2 = 0.0014979066989295145;
+		filter.a3 = -1.8977576044923594;
+		filter.a4 = 0.9037492312880773;
 
 		return filter;
 	}
-
 
 		/// <summary>
 		/// Create a bandpass filter with constant skirt gain
