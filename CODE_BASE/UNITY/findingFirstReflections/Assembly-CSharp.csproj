@@ -82,6 +82,8 @@
      <Compile Include="Assets\scrupts\audioRec.cs" />
      <Compile Include="Assets\scrupts\BiQuad.cs" />
      <Compile Include="Assets\scrupts\boundary.cs" />
+     <Compile Include="Assets\scrupts\ConvolutionReverbUploadIR.cs" />
+     <Compile Include="Assets\scrupts\generateWGWIR.cs" />
      <Compile Include="Assets\scrupts\procCube.cs" />
      <Compile Include="Assets\scrupts\reflectionFinder.cs" />
      <Compile Include="Assets\scrupts\reflectionPath.cs" />

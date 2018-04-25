@@ -60,7 +60,8 @@ public class WGW : MonoBehaviour
 
 	public static bool printit = false;
 	public static bool p = true;
-	public static int filterCase = 0;
+
+	public static int filterCase = 0; //0: flat frequency response, 1: wgwFilter, 2: low pass air filter
 
 	void Start ()
 	{
@@ -567,7 +568,19 @@ public class WGW : MonoBehaviour
 
 		public WGWnode (reflectionPath thePath)
 		{
-			wallFilter = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
+			switch (filterCase)
+			{
+			case 0:
+				wallFilter = BiQuadFilter.flatResponse (delayLine.sampleRate);
+				break;
+			case 1:
+				wallFilter = BiQuadFilter.wgwFilter (delayLine.sampleRate);
+				break;
+			case 2:
+				wallFilter = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
+				break;
+				//Debug.Log (interFilters.Count);
+			}
 			interFilters = new List<BiQuadFilter>();
 			secondInFilters = new List<BiQuadFilter>();
 			secondOutFilters = new List<BiQuadFilter>();
@@ -641,15 +654,6 @@ public class WGW : MonoBehaviour
 			FOSample = incoming.read ();
 			FOSample *= incomingAttFactor;
 
-			for (int s = 0; s < numConnections; s++) {
-				initialSOsamples[s] = FOSample;
-				initialSOsamples[s] *=  0.5f;
-				initialSOsamples[s] = secondInFilters[s].Transform (initialSOsamples[s]);
-				initialSOsamples[s] *= wallAbsCoeff;
-
-				outgoingSample += initialSOsamples [s];
-			}
-
 			FOSample = wallFilter.Transform (FOSample);
 			FOSample *= wallAbsCoeff;
 			HalfFOSample = 0.5f * FOSample;
@@ -666,6 +670,12 @@ public class WGW : MonoBehaviour
 			int i ,j;
 
 			for (i = 0; i < numConnections; i++) {
+				initialSOsamples[i] = FOSample;
+				initialSOsamples[i] *=  0.5f;
+				initialSOsamples[i] = secondInFilters[i].Transform (initialSOsamples[i]);
+				initialSOsamples[i] *= wallAbsCoeff;
+
+				outgoingSample += initialSOsamples [i];
 
 				SOsamples [i] = connections [i].getSampleFromReverseConnection ();
 
@@ -688,8 +698,7 @@ public class WGW : MonoBehaviour
 							*/
 					}
 				}
-
-				//SOsamples [i] = wallFilter.Transform (SOsamples [i]);
+					
 				SOsamples [i] = secondOutFilters[i].Transform(SOsamples[i]);
 				SOsum += SOsamples [i] * interNodeAttFactor [i];
 				SOsum *= attenuationMultiplier;
@@ -768,9 +777,6 @@ public class WGW : MonoBehaviour
 				outgoing.write (outgoingSample);
 
 				SOsum = 0.0f;
-				for (i = 0; i < posSums.Count; i++) {
-					posSums [i] = 0.0f;
-				}
 			} else {
 				/*
 				onlyEarlyReflections = FOSample + SOsum;
@@ -779,9 +785,6 @@ public class WGW : MonoBehaviour
 				FOSample *= outgoingAttFactor;
 				outgoing.write (FOSample);
 				SOsum = 0.0f;
-				for (i = 0; i < posSums.Count; i++) {
-					posSums [i] = 0.0f;
-				}
 			}
 		}
 
@@ -880,17 +883,40 @@ public class WGW : MonoBehaviour
 
 			updateScatteringFactor ();
 
-
-			secondInFilters.Add(BiQuadFilter.flatResponse(delayLine.sampleRate));
-			secondOutFilters.Add(BiQuadFilter.flatResponse(delayLine.sampleRate));
+			switch (filterCase)
+			{
+			case 0:
+				secondInFilters.Add(BiQuadFilter.flatResponse(delayLine.sampleRate));
+				secondOutFilters.Add(BiQuadFilter.flatResponse(delayLine.sampleRate));
+				break;
+			case 1:
+				secondInFilters.Add(BiQuadFilter.wgwFilter(delayLine.sampleRate));
+				secondOutFilters.Add(BiQuadFilter.wgwFilter(delayLine.sampleRate));
+				break;
+			case 2:
+				secondInFilters.Add(BiQuadFilter.highPassAirFilter(delayLine.sampleRate));
+				secondOutFilters.Add(BiQuadFilter.highPassAirFilter(delayLine.sampleRate));
+				break;
+				//Debug.Log (interFilters.Count);
+			}
 
 			for(int i = 0; i < (numConnections + numConnections - 1); i++)
 			{
 				scatterSOsamples.Add(zero);
-				interFilters.Add(BiQuadFilter.flatResponse(delayLine.sampleRate));
-				//interFilters.Add(BiQuadFilter.wgwFilter(delayLine.sampleRate));
-				//interFilters.Add(BiQuadFilter.highPassAirFilter(delayLine.sampleRate));
+
+				switch (filterCase)
+				{
+				case 0:
+					interFilters.Add (BiQuadFilter.flatResponse (delayLine.sampleRate));
+					break;
+				case 1:
+					interFilters.Add(BiQuadFilter.wgwFilter(delayLine.sampleRate));
+					break;
+				case 2:
+					interFilters.Add(BiQuadFilter.highPassAirFilter(delayLine.sampleRate));
+					break;
 				//Debug.Log (interFilters.Count);
+				}
 			}
 		}
 
@@ -1007,7 +1033,7 @@ public class WGW : MonoBehaviour
 			//negSamp = new List<float>();
 			//prevSamp = new List<float>();
 			//scatterDelays = new List<delayLine>();
-			connectFilter = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
+			//connectFilter = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
 			//connectFilter = BiQuadFilter.flatResponse (delayLine.sampleRate);
 
 			parent = theParent;
