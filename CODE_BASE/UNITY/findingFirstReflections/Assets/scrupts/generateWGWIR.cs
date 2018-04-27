@@ -37,6 +37,7 @@ public class generateWGWIR : MonoBehaviour
 	private Queue<float> inSamples;
 	private Queue<float> outSamples;
 	private float[] impulse;
+	private float[] echoPulse;
 	private Queue<float> impulseResponse;
 
 	private float inVal = 0.0f;
@@ -71,6 +72,7 @@ public class generateWGWIR : MonoBehaviour
 
 	public static bool printit = false;
 	public static bool p = true;
+	public bool testy = false;
 
 	private bool generatedNewIR = true;
 	private bool triggerUpload = false;
@@ -79,7 +81,7 @@ public class generateWGWIR : MonoBehaviour
 	private bool firstUpdate = false;
 
 	public static int filterCase = 0; //0: flat frequency response, 1: wgwFilter, 2: low pass air filter
-
+	private int simso = 0;
 	void Start ()
 	{
 		AudioConfiguration AC = AudioSettings.GetConfiguration ();
@@ -91,6 +93,11 @@ public class generateWGWIR : MonoBehaviour
 		impulseResponse = new Queue<float> ();
 		impulse = new float[44100];
 		impulse [0] = 0.967f;
+
+		echoPulse = new float[44100];
+		echoPulse [0] = 0.99f;
+		echoPulse [10000] = 0.88f;
+		echoPulse [20000] = 0.5f;
 
 		delayLine.sampleRate = sampleRate;
 
@@ -132,6 +139,9 @@ public class generateWGWIR : MonoBehaviour
 		if (Input.GetKeyDown ("space")) {
 			p = true;
 			printit = true;
+			testy = true;
+			simso++;
+			transform.Translate (simso, 0, 0);
 			/*
 			for (int i = 0; i < 500; i++) {
 				float fvar = impulseResponse.Dequeue();
@@ -448,6 +458,18 @@ public class generateWGWIR : MonoBehaviour
 
 	}
 
+	public AudioClip getIR(){
+		AudioClip IRforUpload = AudioClip.Create ("IR", impulseResponse.Count, 1, sampleRate, false);
+
+		if (impulseResponse.Count < 1) {
+			IRforUpload.SetData (impulse, 0);
+		} else {
+			IRforUpload.SetData (impulseResponse.ToArray (), 0);
+			testy = true;
+		} 
+		return IRforUpload;
+	}
+	/*
 	public float[] getIR(){
 		float[] IRforUpload;
 		if (impulseResponse.Count < 1) {
@@ -455,8 +477,13 @@ public class generateWGWIR : MonoBehaviour
 		} else {
 			IRforUpload = impulseResponse.ToArray ();
 		}
-		SaveInventory ();
+		//SaveInventory ();
 		return IRforUpload;
+	}
+*/
+	public float [] getEcho(){
+		
+		return echoPulse;
 	}
 
 	public bool doUpload(){

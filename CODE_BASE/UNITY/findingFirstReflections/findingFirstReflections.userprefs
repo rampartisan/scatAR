@@ -2,19 +2,20 @@
   <MonoDevelop.Ide.Workspace ActiveConfiguration="Debug" PreferredExecutionTarget="Unity.Instance.Unity Editor" />
   <MonoDevelop.Ide.Workbench ActiveDocument="Assets/scrupts/generateWGWIR.cs">
     <Files>
-      <File FileName="Assets/scrupts/ConvolutionReverbUploadIR.cs" Line="17" Column="28" />
-      <File FileName="Assets/scrupts/generateWGWIR.cs" Line="157" Column="18" />
+      <File FileName="Assets/scrupts/generateWGWIR.cs" Line="78" Column="20" />
+      <File FileName="Assets/scrupts/ConvolutionReverbUploadIR.cs" Line="58" Column="10" />
       <File FileName="Assets/scrupts/WGW.cs" Line="1" Column="1" />
       <File FileName="Assets/navMeshMake.cs" Line="1" Column="1" />
       <File FileName="Assets/scrupts/audioRec.cs" Line="1" Column="1" />
       <File FileName="Assets/scrupts/BiQuad.cs" Line="1" Column="1" />
       <File FileName="Assets/scrupts/boundary.cs" Line="1" Column="1" />
       <File FileName="Assets/randomFX.cs" Line="1" Column="1" />
-      <File FileName="Assets/scrupts/SDN.cs" Line="604" Column="4" />
+      <File FileName="Assets/scrupts/SDN.cs" Line="1" Column="1" />
       <File FileName="Assets/ResonanceAudio/Scripts/ResonanceAudioSource.cs" Line="1" Column="1" />
       <File FileName="Assets/ResonanceAudio/Scripts/ResonanceAudioListener.cs" Line="1" Column="1" />
       <File FileName="Assets/scrupts/reflectionPath.cs" Line="1" Column="1" />
       <File FileName="Assets/scrupts/reflectionFinder.cs" Line="1" Column="1" />
+      <File FileName="Assets/Standard Assets/Utility/SimpleActivatorMenu.cs" Line="10" Column="16" />
     </Files>
   </MonoDevelop.Ide.Workbench>
   <MonoDevelop.Ide.DebuggingService.Breakpoints>

@@ -485,7 +485,7 @@ public class MeshOcclusionUIController : MonoBehaviour, ITangoLifecycle, ITangoP
 		Button_placeRandomMarker ();
 		m_markerObject.SetActive (true);
 		Button_StartObjectfinding.gameObject.SetActive (false);
-		m_markerObject.GetComponent<GvrAudioSource> ().Play ();
+		//m_markerObject.GetComponent<GvrAudioSource> ().Play ();
 
 
 	}

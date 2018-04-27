@@ -20,7 +20,7 @@ MonoBehaviour:
   m_ShowMode: 4
   m_Title: 
   m_RootView: {fileID: 6}
-  m_MinSize: {x: 950, y: 300}
+  m_MinSize: {x: 950, y: 392}
   m_MaxSize: {x: 10000, y: 10000}
 --- !u!114 &2
 MonoBehaviour:
@@ -45,7 +45,7 @@ MonoBehaviour:
   m_MinSize: {x: 683, y: 342}
   m_MaxSize: {x: 12008, y: 8042}
   vertical: 0
-  controlID: 55
+  controlID: 80
 --- !u!114 &3
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -91,8 +91,8 @@ MonoBehaviour:
     y: 0
     width: 265
     height: 515
-  m_MinSize: {x: 200, y: 200}
-  m_MaxSize: {x: 4000, y: 4000}
+  m_MinSize: {x: 202, y: 221}
+  m_MaxSize: {x: 4002, y: 4021}
   m_ActualView: {fileID: 19}
   m_Panes:
   - {fileID: 19}
@@ -116,8 +116,8 @@ MonoBehaviour:
     y: 515
     width: 1316
     height: 373
-  m_MinSize: {x: 102, y: 121}
-  m_MaxSize: {x: 4002, y: 4021}
+  m_MinSize: {x: 100, y: 100}
+  m_MaxSize: {x: 4000, y: 4000}
   m_ActualView: {fileID: 15}
   m_Panes:
   - {fileID: 17}
@@ -212,7 +212,7 @@ MonoBehaviour:
   m_MinSize: {x: 406, y: 342}
   m_MaxSize: {x: 8006, y: 8042}
   vertical: 1
-  controlID: 56
+  controlID: 81
 --- !u!114 &10
 MonoBehaviour:
   m_ObjectHideFlags: 52
@@ -413,8 +413,8 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_MixersTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 6c560000
-    m_LastClickedID: 22124
+    m_SelectedIDs: c2560000
+    m_LastClickedID: 22210
     m_ExpandedIDs: 12eb343c
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -485,7 +485,7 @@ MonoBehaviour:
       splitSize: 6
       xOffset: 0
     m_HorizontalSplitter:
-      ID: 149
+      ID: 184
       splitterInitialOffset: 0
       currentActiveSplitter: -1
       realSizes: 8b01000098030000
@@ -569,19 +569,19 @@ MonoBehaviour:
     m_ShowAllHits: 0
     m_SearchArea: 0
     m_Folders:
-    - Assets/Plugins
+    - Assets/audio
   m_ViewMode: 1
   m_StartGridSize: 64
   m_LastFolders:
-  - Assets/Plugins
+  - Assets/audio
   m_LastFoldersGridSize: -1
   m_LastProjectPath: /Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections
   m_IsLocked: 0
   m_FolderTreeState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: a42d0000
-    m_LastClickedID: 11684
-    m_ExpandedIDs: 0000000034070000182b0000ca2c0000882d0000ae2d0000322e00008e31000046330000d83400002a37000066370000324400006646000096470000a8540000ac560000f46500001066000082670000ca670000888000008a8000008c8000008e800000908000009280000094800000
+    m_SelectedIDs: 7c670000
+    m_LastClickedID: 26492
+    m_ExpandedIDs: 00000000340700006c2b00001e2d0000dc2d0000022e0000862e0000e43100009c3300002e35000080370000bc37000088440000bc460000ec470000fe540000025700004a66000066660000d867000020680000d8690000c4800000c6800000c8800000ca800000cc800000ce800000d0800000d280000000ca9a3bffffff7f
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -609,7 +609,7 @@ MonoBehaviour:
     scrollPos: {x: 0, y: 0}
     m_SelectedIDs: 
     m_LastClickedID: 0
-    m_ExpandedIDs: 0000000034070000182b0000ca2c0000882d0000ae2d0000322e00008e31000046330000d83400002a37000066370000324400006646000096470000a8540000ac560000f46500001066000082670000ca670000888000008a8000008c8000008e800000908000009280000094800000
+    m_ExpandedIDs: 00000000340700006c2b00001e2d0000dc2d0000022e0000862e0000e43100009c3300002e35000080370000bc37000088440000bc460000ec470000fe540000025700004a66000066660000d867000020680000d8690000c4800000c6800000c8800000ca800000cc800000ce800000d0800000d2800000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
@@ -634,9 +634,9 @@ MonoBehaviour:
       m_Icon: {fileID: 0}
       m_ResourceFile: 
   m_ListAreaState:
-    m_SelectedInstanceIDs: 046b0000
-    m_LastClickedInstanceID: 27396
-    m_HadKeyboardFocusLastEvent: 0
+    m_SelectedInstanceIDs: 4e6b0000
+    m_LastClickedInstanceID: 27470
+    m_HadKeyboardFocusLastEvent: 1
     m_ExpandedInstanceIDs: 1a2500009e2f00006c250000c02600000a250000b42c000090270000842f00000625000002250000822400001837000056a70000862600002a2c00003e2c0000b6050000cc360000e82a0000c4600000d63200002e64000000000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
@@ -727,9 +727,9 @@ MonoBehaviour:
   m_PersistentViewDataDictionary: {fileID: 0}
   m_TreeViewState:
     scrollPos: {x: 0, y: 0}
-    m_SelectedIDs: 
-    m_LastClickedID: 0
-    m_ExpandedIDs: 98fbffff00000000
+    m_SelectedIDs: 4e6b0000
+    m_LastClickedID: 27470
+    m_ExpandedIDs: 84fbffff00000000
     m_RenameOverlay:
       m_UserAcceptedRename: 0
       m_Name: 
