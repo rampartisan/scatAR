@@ -21,7 +21,7 @@ public class boundary : MonoBehaviour {
 
 		mc  = gameObject.AddComponent<MeshCollider> ();
 		mc.sharedMesh = theMesh;
-		gameObject.AddComponent<MeshRenderer> ();
+		//gameObject.AddComponent<MeshRenderer> ();
 		MeshFilter mf = gameObject.AddComponent<MeshFilter> ();
 		mf.mesh = theMesh;
 		init = true;
@@ -42,15 +42,17 @@ public class boundary : MonoBehaviour {
 			gameObject.layer = LayerMask.NameToLayer (name);
 		}
 	}
-
+	/*
 	public void setBoundaryMaterial(Material mat) {
 		if (init) {
-			gameObject.GetComponent<MeshRenderer> ().material = mat;
+			gameObject.GetComponent<MeshRenderer> ().material = mat; //don't want the boundary collider to be rendered
 		}
-	}
+	}*/
 
 	public void turnOnCollider() {
-		mc.enabled = true;
+		//mc.enabled = true;	
+		mc.enabled = false;  //very lazy way of disregarding the boundary collider. time pressure.
+
 	}
 
 	public void turnOffCollider() {

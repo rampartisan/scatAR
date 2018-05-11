@@ -92,7 +92,7 @@ public class generateWGWIR : MonoBehaviour
 		outSamples = new Queue<float> ();
 		impulseResponse = new Queue<float> ();
 		impulse = new float[44100];
-		impulse [0] = 0.967f;
+		impulse [0] = 1.0f;
 
 		echoPulse = new float[44100];
 		echoPulse [0] = 0.99f;

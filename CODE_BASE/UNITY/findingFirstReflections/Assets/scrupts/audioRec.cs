@@ -53,10 +53,12 @@ public class audioRec : MonoBehaviour {
 		Array.Clear (bigBuff, 0, bigBuff.Length);
 		sampleCount = 0;
 		string timeID = DateTime.Now.ToString ();
+		/*
 		timeID = timeID.Replace (@"/", "");
 		timeID = timeID.Replace (" ", "");
 		timeID = timeID.Replace (":", "");
-		fileName = saveDirectory + fileNameStem + timeID + ".wav";
+		*/
+		fileName = saveDirectory + fileNameStem + ".wav";
 		init = true;
 		recordAudio = true;
 	}

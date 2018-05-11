@@ -13,7 +13,6 @@ public class generateWGWIR : MonoBehaviour
 {
 	public GameObject listener;
 	public boundary boundary;
-	public GameObject geoForNetwork;
 
 	public static int targetNumReflections = 8;
 	public bool update = true;
@@ -101,12 +100,16 @@ public class generateWGWIR : MonoBehaviour
 		RF = gameObject.AddComponent<reflectionFinder> ();
 		RF.setListener (listener);
 
-		boundary.setBoundaryBounds (GetMaxBounds (geoForNetwork));	
+	
 		RF.setboundary (boundary);
-
 		RF.setNumInitalDirections (targetNumReflections);
 		RF.doUpdate = update;
 		RF.onNewReflections += handleNewReflections;
+		/*
+		generateWGWIRDraw draw = GetComponent<generateWGWIRDraw> ();
+		if (draw != null) {
+			RF.onNewReflections += draw.updateVisualNetwork;
+		}*/
 
 		sampleMX = new Mutex ();
 		networkMX = new Mutex ();
@@ -128,18 +131,6 @@ public class generateWGWIR : MonoBehaviour
 			networkMX.ReleaseMutex();
 			reflectionsUpdated = true;
 		}
-
-		if (Input.GetKeyDown ("space")) {
-			p = true;
-			printit = true;
-			/*
-			for (int i = 0; i < 500; i++) {
-				float fvar = impulseResponse.Dequeue();
-				Debug.Log (fvar);
-			}*/
-		}
-		else
-			printit = false;
 
 		if (!firstUpdate && directAtt > 0) {
 			audioProcessThread = new Thread (audioProcess);
@@ -447,7 +438,7 @@ public class generateWGWIR : MonoBehaviour
 		}
 
 	}
-
+	/*
 	public float[] getIR(){
 		float[] IRforUpload;
 		if (impulseResponse.Count < 1) {
@@ -456,6 +447,17 @@ public class generateWGWIR : MonoBehaviour
 			IRforUpload = impulseResponse.ToArray ();
 		}
 		SaveInventory ();
+		return IRforUpload;
+	}*/
+
+	public AudioClip getIR(){
+		AudioClip IRforUpload = AudioClip.Create ("IR", impulseResponse.Count, 1, sampleRate, false);
+
+		if (impulseResponse.Count < 1) {
+			IRforUpload.SetData (impulse, 0);
+		} else {
+			IRforUpload.SetData (impulseResponse.ToArray (), 0);
+		} 
 		return IRforUpload;
 	}
 
@@ -1275,104 +1277,6 @@ public class generateWGWIR : MonoBehaviour
 				}
 			}
 		}*/
-	}
-
-	public class generateWGWIRSecondConnection
-	{
-		public float posSamp = 0.0f;
-		public float negSamp = 0.0f;
-		public float prevSample = 0.0f;
-
-		private generateWGWIRnode parent;
-		private generateWGWIRnode middle;
-		private generateWGWIRnode target;
-		private float length;
-		private delayLine delay;
-		private generateWGWIRconnection reverseConnection;
-		public BiQuadFilter connectFilter;
-
-		public generateWGWIRSecondConnection (generateWGWIRnode theParent, generateWGWIRnode theMiddle, generateWGWIRnode theTarget)
-		{
-			connectFilter = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
-
-			parent = theParent;
-			middle = theMiddle;
-			target = theTarget;
-			length = Vector3.Distance (parent.getPosition (), middle.getPosition ()) + Vector3.Distance (middle.getPosition(),target.getPosition());
-			delay = new delayLine (1.0f, delayLine.distanceToDelayTime (length));
-		}
-
-		public void clearDelay ()
-		{
-			delay.clear ();
-		}
-
-		public void setMiddle (generateWGWIRnode n)
-		{
-			middle = n;
-			updateDelayLength ();
-		}
-
-		public void setTarget (generateWGWIRnode n)
-		{
-			target = n;
-			updateDelayLength ();
-		}
-
-		public int getDelayTime ()
-		{
-			return delay.getDelayTime ();
-		}
-
-		public void inputToDelay (float sample)
-		{
-			delay.write (sample);
-		}
-
-		public float readFromDelay ()
-		{
-			return delay.read ();
-		}
-
-		public float getSampleFromReverseConnection ()
-		{
-			if (reverseConnection != null) {
-				return reverseConnection.readFromDelay ();
-			} else {					
-				return 0.0f;
-			}
-		}
-
-		public generateWGWIRnode getTarget ()
-		{
-			return target;
-		}
-
-		public generateWGWIRnode getMiddle ()
-		{
-			return middle;
-		}
-
-		public generateWGWIRnode getParent ()
-		{
-			return parent;
-		}
-
-		public float getLength ()
-		{
-			return length;
-		}
-
-		public void setReverseConnection (ref generateWGWIRconnection c)
-		{
-			reverseConnection = c;
-		}
-
-		public void updateDelayLength ()
-		{
-			length = Vector3.Distance (parent.getPosition (), middle.getPosition ()) + Vector3.Distance (middle.getPosition(),target.getPosition());
-			delay.setDelay (delayLine.distanceToDelayTime (length));
-		}
 	}
 }
 

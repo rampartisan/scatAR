@@ -145,7 +145,7 @@ public class SDN : MonoBehaviour
 			directDelay.write (inVal);
 			directVal = directDelay.read ();
 			directVal *= directAtt;
-			//inVal *= networkInScale;
+			inVal *= networkInScale;
 
 			for (j = 0; j < network.Count; j++) {
 				outVal += network [j].getOutgoing ();
@@ -514,11 +514,6 @@ public class SDN : MonoBehaviour
 		private delayLine outgoing;
 
 		private BiQuadFilter wallFilter;
-		private BiQuadFilter wallFilter1;
-		private BiQuadFilter wallFilter2;
-		private BiQuadFilter wallFilter3;
-		private BiQuadFilter wallFilter4;
-		private BiQuadFilter wallFilter5;
 
 		private float scatteringFactor;
 		private float scatteringFactorDiag;
@@ -534,12 +529,6 @@ public class SDN : MonoBehaviour
 		public SDNnode (reflectionPath thePath)
 		{
 			wallFilter = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
-			wallFilter1 = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
-			wallFilter2 = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
-			wallFilter3 = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
-			wallFilter4 = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
-			wallFilter5 = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
-			//wallFilter = BiQuadFilter.flatResponse (delayLine.sampleRate);
 			connections = new List<SDNConnection> ();
 			nodePath = thePath;
 			position = nodePath.segments [1].origin;

@@ -61,7 +61,7 @@ public class WGW : MonoBehaviour
 	public static bool printit = false;
 	public static bool p = true;
 
-	public static int filterCase = 0; //0: flat frequency response, 1: wgwFilter, 2: low pass air filter
+	public static int filterCase = 2; //0: flat frequency response, 1: wgwFilter, 2: low pass air filter
 
 	void Start ()
 	{
@@ -155,7 +155,7 @@ public class WGW : MonoBehaviour
 			directDelay.write (inVal);
 			directVal = directDelay.read ();
 			directVal *= directAtt;
-			//inVal *= networkInScale;
+			inVal *= networkInScale;
 
 			for (j = 0; j < network.Count; j++) {
 				outVal += network [j].getOutgoing ();

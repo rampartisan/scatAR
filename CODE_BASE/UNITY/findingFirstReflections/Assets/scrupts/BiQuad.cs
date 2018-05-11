@@ -215,14 +215,22 @@ using UnityEngine;
 	public static BiQuadFilter highPassAirFilter(float sampleRate) {
 		var filter = new BiQuadFilter ();
 
-		//10k hz
+		//15k hz
 		/*
+		filter.a0 = 0.5396588770391589;
+		filter.a1 = 1.0793177540783179;
+		filter.a2 = 0.5396588770391589;
+		filter.a3 = 0.7537754072832799;
+		filter.a4 = 0.40486010087335567;
+	*/
+		//10k hz
+
 		filter.a0 =  0.2513790015131591; 
 		filter.a1 =  0.5027580030263182; 
 		filter.a2 =  0.2513790015131591; 
 		filter.a3 =  -0.17124071441396285; 
 		filter.a4 =   0.1767567204665992; 
-		*/
+
 
 		//6500 hz
 		/*
@@ -233,12 +241,13 @@ using UnityEngine;
 		filter.a4 = 0.3214048131521458;
 */
 		//500 hz
+			/*
 		filter.a0 = 0.0014979066989295145;
 		filter.a1 = 0.002995813397859029;
 		filter.a2 = 0.0014979066989295145;
 		filter.a3 = -1.8977576044923594;
 		filter.a4 = 0.9037492312880773;
-
+*/
 		return filter;
 	}
 
