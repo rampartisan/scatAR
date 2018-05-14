@@ -502,7 +502,7 @@ public class SDN : MonoBehaviour
 	public class SDNnode
 	{
 		public static float specularity = 0.5f;
-		public static float wallAbsCoeff = 0.97f;
+		public static float wallAbsCoeff = 0.94f;
 		public static float nodeLoss = 1.0f - wallAbsCoeff;
 //		public static float nodeLoss = 0.0f;
 
@@ -528,7 +528,7 @@ public class SDN : MonoBehaviour
 
 		public SDNnode (reflectionPath thePath)
 		{
-			wallFilter = BiQuadFilter.highPassAirFilter (delayLine.sampleRate);
+			wallFilter = BiQuadFilter.flatResponse (delayLine.sampleRate);
 			connections = new List<SDNConnection> ();
 			nodePath = thePath;
 			position = nodePath.segments [1].origin;

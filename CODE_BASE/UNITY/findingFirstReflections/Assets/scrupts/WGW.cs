@@ -525,7 +525,7 @@ public class WGW : MonoBehaviour
 	public class WGWnode
 	{
 		public static float specularity = 0.5f;
-		public static float wallAbsCoeff = 0.97f;
+		public static float wallAbsCoeff = 0.94f;
 		public static float nodeLoss = 1.0f - wallAbsCoeff;
 		//		public static float nodeLoss = 0.0f;
 

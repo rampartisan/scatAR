@@ -19,7 +19,7 @@ public class ConvolutionReverbUploadIR : MonoBehaviour
 	public float[] IR3;
 	public float[] IR4;
 	*/
-	private string name = "ir";
+	//private string name = "ir";
 	/*
 	private string name2 = "ir2";
 	private string name3 = "ir3";
@@ -60,7 +60,7 @@ public class ConvolutionReverbUploadIR : MonoBehaviour
 			float[] data = new float[IR.samples];
 			IR.GetData (data, 0);
 			Debug.Log ("Uploading impulse response " + IR.name + " to slot 1 with data length: " + data.Length + "     " + IR.frequency);
-			ConvolutionReverb_UploadSample (1, data, data.Length / IR.channels, IR.channels, IR.frequency, IR.name);
+			ConvolutionReverb_UploadSample (2, data, data.Length / IR.channels, IR.channels, IR.frequency, IR.name);
 		}
 		/*
 		if (!gameObject.GetComponent<generateWGWIR> ().doUpload ()) {

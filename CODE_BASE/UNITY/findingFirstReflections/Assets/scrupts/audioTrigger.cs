@@ -4,19 +4,41 @@ using UnityEngine;
 
 public class audioTrigger : MonoBehaviour {
 	private GameObject Ball;
-	AudioSource audio;
+	private GameObject mainCam;
+	AudioSource audioS;
+	public AudioClip clip1;
+	public AudioClip clip2;
+
+	private bool playOne = false;
 	// Use this for initialization
 	void Start () {
 		Ball = GameObject.Find("ball");
-		audio = GetComponent<AudioSource>();
+		mainCam = GameObject.Find("MainCamera");
+		audioS = GetComponent<AudioSource>();
 	}
-	
+
 	// Update is called once per frame
 	void Update () {
-		if (Ball.GetComponent<ballJump> ().ballHit) {
-			audio.Play();
-			Ball.GetComponent<ballJump> ().setBallHit (false);
-			Debug.Log ("YAS");
+
+		if (mainCam.GetComponent<testControl> ().getSoundType () == 0) {
+			if (playOne) {
+				audioS.Play ();
+				audioS.loop = true;
+				playOne = false;
+				Debug.Log ("NEXT");
+			}//audioS.loop = true;
 		}
+		else if (mainCam.GetComponent<testControl> ().getSoundType () == 1) {
+			audioS.loop = false;
+			if (Ball.GetComponent<ballJump> ().ballHit) {
+				audioS.PlayOneShot (clip1);
+				Ball.GetComponent<ballJump> ().setBallHit (false);
+			}
+		}
+	}
+
+
+	public void setAudioPlay(bool playOnce){
+		playOne = playOnce;
 	}
 }

@@ -54,9 +54,6 @@
      <Compile Include="Assets\_MK\MKGlow\Demo\Code\MK_DemoControl.cs" />
      <Compile Include="Assets\_MK\MKGlow\Demo\Code\MK_RotateObject.cs" />
      <Compile Include="Assets\_MK\MKGlow\MKGlow.cs" />
-     <Compile Include="Assets\ballJump.cs" />
-     <Compile Include="Assets\cameraMoveScript.cs" />
-     <Compile Include="Assets\guiSlider.cs" />
      <Compile Include="Assets\LocalNavMeshBuilder.cs" />
      <Compile Include="Assets\MoveTo.cs" />
      <Compile Include="Assets\NavMeshComponents\Scripts\NavMeshLink.cs" />
@@ -85,8 +82,10 @@
      <Compile Include="Assets\scrupts\adjustParams.cs" />
      <Compile Include="Assets\scrupts\audioRec.cs" />
      <Compile Include="Assets\scrupts\audioTrigger.cs" />
+     <Compile Include="Assets\scrupts\ballJump.cs" />
      <Compile Include="Assets\scrupts\BiQuad.cs" />
      <Compile Include="Assets\scrupts\boundary.cs" />
+     <Compile Include="Assets\scrupts\cameraMoveScript.cs" />
      <Compile Include="Assets\scrupts\ConvolutionReverbUploadIR.cs" />
      <Compile Include="Assets\scrupts\generateWGWIR.cs" />
      <Compile Include="Assets\scrupts\procCube.cs" />
@@ -94,7 +93,7 @@
      <Compile Include="Assets\scrupts\reflectionPath.cs" />
      <Compile Include="Assets\scrupts\SDN.cs" />
      <Compile Include="Assets\scrupts\SDNDraw.cs" />
-     <Compile Include="Assets\scrupts\testtttt.cs" />
+     <Compile Include="Assets\scrupts\testControl.cs" />
      <Compile Include="Assets\scrupts\WGW.cs" />
      <Compile Include="Assets\scrupts\WGWDraw.cs" />
      <Compile Include="Assets\wander.cs" />
