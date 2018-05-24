@@ -1,0 +1,11 @@
+Room dimensions:
+13x6x10 meters
+L * H * W
+
+Position in room (x,y,z):
+source: -1.81, 1.07, -0,55
+listener: 0.46, 1.84, 2.21
+
+
+Direct distance between source and listener:
+3.6 meters

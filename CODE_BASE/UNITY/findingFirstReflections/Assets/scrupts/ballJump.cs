@@ -28,6 +28,7 @@ public class ballJump : MonoBehaviour {
 	}
 
 
+
 	public void setBallHit(bool ballState){
 		ballHit = ballState;
 	}

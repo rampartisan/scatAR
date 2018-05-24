@@ -26,10 +26,10 @@ public class cameraMoveScript : MonoBehaviour {
 	// Update is called once per frame
 	void Update () {
 		
-		if (Time.realtimeSinceStartup < 21.5f) {
+		if (Time.realtimeSinceStartup < 15.5f) { //21.5
 			transform.Translate (Vector3.forward * camSpeed * Time.deltaTime);
-			transform.Rotate (Vector3.up * 20 * Time.deltaTime);
-		} else if (Time.realtimeSinceStartup > 25.0f){
+			transform.Rotate (Vector3.up * 30 * Time.deltaTime);
+		} else if (Time.realtimeSinceStartup > 20.0f){ //25.0f
 			cam1.enabled = false;
 			cam2.enabled = true;
 			camTurnDone = true;
