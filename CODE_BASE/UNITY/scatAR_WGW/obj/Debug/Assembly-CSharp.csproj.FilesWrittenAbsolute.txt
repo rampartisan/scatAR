@@ -1,0 +1,82 @@
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Assembly-CSharp.dll.mdb
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Assembly-CSharp.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/obj/Debug/Assembly-CSharp.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/obj/Debug/Assembly-CSharp.dll.mdb
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/UnityEngine.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/UnityEditor.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/UnityEngine.UI.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/UnityEngine.Networking.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/UnityEngine.TestRunner.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/nunit.framework.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/UnityEngine.Analytics.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/UnityEngine.HoloLens.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/UnityEngine.VR.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Parallel.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Google.ProtocolBuffers.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Assembly-CSharp-firstpass.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Assembly-CSharp-firstpass.dll.mdb
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Mono.Cecil.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Unity.SerializationLogic.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Unity.DataContract.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/ICSharpCode.NRefactory.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Unity.UNetWeaver.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Unity.UNetWeaver.dll.mdb
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Unity.CecilTools.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Mono.Cecil.Pdb.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Mono.Cecil.Mdb.dll
+/Users/Alex/Code/WWISE/findingFirstReflections/Temp/bin/Debug/Pathfinding.Ionic.Zip.Reduced.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Assembly-CSharp.dll.mdb
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Assembly-CSharp.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/obj/Debug/Assembly-CSharp.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/obj/Debug/Assembly-CSharp.dll.mdb
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEngine.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEngine.UIAutomation.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.UIAutomation.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.TestRunner.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEngine.TestRunner.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/nunit.framework.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEngine.Networking.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.Networking.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEngine.UI.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.UI.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEngine.Timeline.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.Timeline.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.TreeEditor.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.GoogleAudioSpatializer.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEngine.GoogleAudioSpatializer.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.HoloLens.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEngine.HoloLens.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.SpatialTracking.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEngine.SpatialTracking.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.VR.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.Graphs.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.Android.Extensions.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.iOS.Extensions.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.OSXStandalone.Extensions.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Parallel.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Google.ProtocolBuffers.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Pathfinding.Ionic.Zip.Reduced.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEngine.Advertisements.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.Advertisements.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEngine.Analytics.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.Analytics.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEngine.Purchasing.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.Purchasing.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEngine.StandardEvents.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Assembly-CSharp-firstpass.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Assembly-CSharp-firstpass.dll.mdb
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Unity.Cecil.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Unity.SerializationLogic.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Unity.DataContract.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/ExCSS.Unity.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Unity.Legacy.NRefactory.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Unity.UNetWeaver.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Unity.UNetWeaver.dll.mdb
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Unity.CecilTools.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Unity.Cecil.Pdb.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/Unity.Cecil.Mdb.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.iOS.Extensions.Xcode.xml
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.iOS.Extensions.Common.dll
+/Users/jonas/Documents/SMC /Thesis/project_scatAR/scatAR/CODE_BASE/UNITY/findingFirstReflections/Temp/bin/Debug/UnityEditor.iOS.Extensions.Common.dll.mdb
